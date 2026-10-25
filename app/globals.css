@@ -1,0 +1,231 @@
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-marfil: #F4F0E6;
+  --color-marfil-50: #FAF8F3;
+  --color-marfil-100: #F4F0E6;
+  --color-marfil-200: #E8E0CD;
+  --color-marfil-300: #DCD0B4;
+
+  --color-verde-salvia: #777D62;
+  --color-verde-salvia-light: #969B85;
+  --color-verde-salvia-dark: #5E634C;
+
+  --color-verde-bosque: #263D30;
+  --color-verde-bosque-light: #355442;
+  --color-verde-bosque-dark: #1B2C23;
+  --color-verde-bosque-deep: #132119;
+
+  --color-yute-natural: #C4A77D;
+  --color-yute-natural-light: #D5BE9D;
+  --color-yute-natural-dark: #A8885B;
+
+  --color-dorado-antiguo: #B79A53;
+  --color-dorado-antiguo-light: #D4BC7B;
+  --color-dorado-antiguo-dark: #967A38;
+
+  --color-madera-nogal: #805D40;
+  --color-madera-nogal-light: #9C7654;
+  --color-madera-nogal-dark: #62442C;
+
+  --font-serif: var(--font-bodoni), 'Bodoni Moda', 'Playfair Display', Georgia, serif;
+  --font-sans: var(--font-montserrat), 'Montserrat', sans-serif;
+  --font-title: 'Great Vibes', 'Great Vibes Local', var(--font-great-vibes), cursive;
+  --font-script: 'Great Vibes', 'Great Vibes Local', var(--font-great-vibes), cursive;
+
+  --shadow-soft: 0 10px 30px -10px rgba(38, 61, 48, 0.08);
+  --shadow-luxury: 0 20px 40px -15px rgba(38, 61, 48, 0.15);
+  --shadow-gold: 0 4px 20px -2px rgba(183, 154, 83, 0.25);
+}
+
+/* Fallback local garantizado para la tipografía Great Vibes del usuario */
+@font-face {
+  font-family: 'Great Vibes';
+  src: url('/tipografia/GreatVibes-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Great Vibes Local';
+  src: url('/tipografia/GreatVibes-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@utility font-title {
+  font-family: 'Great Vibes', 'Great Vibes Local', var(--font-great-vibes), cursive !important;
+}
+
+@utility font-script {
+  font-family: 'Great Vibes', 'Great Vibes Local', var(--font-great-vibes), cursive !important;
+}
+
+@utility font-great-vibes {
+  font-family: 'Great Vibes', 'Great Vibes Local', var(--font-great-vibes), cursive !important;
+}
+
+.font-title,
+.font-script,
+.font-great-vibes,
+h1.font-title,
+h2.font-title,
+p.font-title,
+span.font-title {
+  font-family: 'Great Vibes', 'Great Vibes Local', var(--font-great-vibes), cursive !important;
+}
+
+:root {
+  --background: #F4F0E6;
+  --foreground: #263D30;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: #F4F0E6;
+  color: #263D30;
+  overflow-x: hidden;
+  position: relative;
+  selection-background-color: #777D62;
+  selection-color: #FFFFFF;
+}
+
+::selection {
+  background-color: #777D62;
+  color: #F4F0E6;
+}
+
+/* Subtle organic paper texture effect */
+.bg-paper-texture {
+  background-color: #F4F0E6;
+  background-image: radial-gradient(rgba(196, 167, 125, 0.12) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+.bg-dark-forest {
+  background-color: #263D30;
+  background-image: radial-gradient(rgba(183, 154, 83, 0.08) 1px, transparent 0);
+  background-size: 28px 28px;
+}
+
+/* ===== Fondos por tipo de sección (diseño "editorial": oscuro / papel beige) ===== */
+.section-dark {
+  background-color: #132119;
+  background-image: radial-gradient(rgba(183, 154, 83, 0.07) 1px, transparent 0);
+  background-size: 28px 28px;
+}
+
+.section-dark-alt {
+  background-color: #1B2C23;
+  background-image: radial-gradient(rgba(183, 154, 83, 0.07) 1px, transparent 0);
+  background-size: 28px 28px;
+}
+
+.section-deep {
+  background-color: #0E1812;
+  background-image: radial-gradient(rgba(183, 154, 83, 0.06) 1px, transparent 0);
+  background-size: 28px 28px;
+}
+
+/* Papel beige (debe coincidir con --color-marfil-200 usado en TornEdge) */
+.bg-paper-beige {
+  background-color: #E8E0CD;
+  background-image: radial-gradient(rgba(128, 93, 64, 0.10) 1px, transparent 0);
+  background-size: 22px 22px;
+}
+
+/* Desvanece arriba y abajo para fundir una foto con el fondo oscuro */
+.fade-edges-y {
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 14%, #000 86%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 14%, #000 86%, transparent);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out both;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #F4F0E6;
+}
+::-webkit-scrollbar-thumb {
+  background: #C4A77D;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #777D62;
+}
+
+/* Modern Form Validation Styles following modern-web-guidance */
+input:user-invalid,
+select:user-invalid,
+textarea:user-invalid {
+  border-color: #b91c1c !important;
+  background-color: #fef2f2 !important;
+}
+
+input:user-valid:not(:placeholder-shown),
+select:user-valid,
+textarea:user-valid:not(:placeholder-shown) {
+  border-color: #777D62;
+}
+
+/* Micro-animations */
+@keyframes floatGentle {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(1deg);
+  }
+}
+
+.animate-float-gentle {
+  animation: floatGentle 6s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(183, 154, 83, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(183, 154, 83, 0.45);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+/* Shimmer gold line */
+.gold-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(183, 154, 83, 0) 0%,
+    rgba(183, 154, 83, 0.8) 50%,
+    rgba(183, 154, 83, 0) 100%
+  );
+}
