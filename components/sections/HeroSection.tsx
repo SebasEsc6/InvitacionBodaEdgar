@@ -56,9 +56,9 @@ export default function HeroSection({ guestName, cupos }: HeroSectionProps) {
         fetchPriority="high"
         className="absolute inset-0 -z-20 h-full w-full object-cover object-[50%_20%] sm:object-[50%_28%]"
       />
-      {/* Degradado envolvente sutil para máxima legibilidad sin ocultar la fotografía */}
-      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-verde-bosque-deep/45 via-verde-bosque-deep/15 to-verde-bosque-deep" />
-      <div className="absolute inset-x-0 bottom-0 -z-10 h-3/4 bg-gradient-to-t from-verde-bosque-deep via-verde-bosque-deep/85 to-transparent" />
+      {/* Degradado envolvente sutil para máxima legibilidad sin opacar la fotografía */}
+      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-verde-bosque-deep/30 via-transparent to-verde-bosque-deep/90" />
+      <div className="absolute inset-x-0 bottom-0 -z-10 h-1/2 bg-gradient-to-t from-verde-bosque-deep via-verde-bosque-deep/60 to-transparent" />
 
       <div className="mx-auto flex w-full max-w-4xl flex-col items-center px-6 pb-20 pt-20 text-center sm:pb-28 sm:pt-28 md:pb-36 lg:pb-44">
         {/* Nombres principales en la tipografía Great Vibes (cursiva clásica de boda) */}
@@ -83,7 +83,7 @@ export default function HeroSection({ guestName, cupos }: HeroSectionProps) {
               style={{ fontFamily: "'Great Vibes', 'Great Vibes Local', var(--font-great-vibes), cursive" }}
               className="block text-[clamp(4.2rem,15vw,8.5rem)] leading-[1.05]"
             >
-              María
+              Camila
             </span>
           </h1>
         </FadeUp>

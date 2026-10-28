@@ -79,20 +79,20 @@ span.font-title {
 }
 
 :root {
-  --background: #F4F0E6;
-  --foreground: #263D30;
+  --background: #0E1812;
+  --foreground: #F4F0E6;
 }
 
 html {
   scroll-behavior: smooth;
-  background-color: var(--background);
-  color: var(--foreground);
+  background-color: #0E1812;
+  color: #F4F0E6;
 }
 
 body {
   font-family: var(--font-sans);
-  background-color: #F4F0E6;
-  color: #263D30;
+  background-color: #0E1812;
+  color: #F4F0E6;
   overflow-x: hidden;
   position: relative;
   selection-background-color: #777D62;

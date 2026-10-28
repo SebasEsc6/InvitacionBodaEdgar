@@ -67,18 +67,34 @@ function getGoogleAuth() {
   let privateKey = process.env.GOOGLE_PRIVATE_KEY;
 
   if (!sheetId || !clientEmail || !privateKey) {
+    console.warn("[Sheets Config] Variables de entorno de Google Sheets no configuradas en el servidor:", {
+      GOOGLE_SHEET_ID: !!sheetId,
+      GOOGLE_SERVICE_ACCOUNT_EMAIL: !!clientEmail,
+      GOOGLE_PRIVATE_KEY: !!privateKey,
+    });
     return null;
   }
 
-  // Handle newlines in private key string whether passed in double quotes or escaped
-  privateKey = privateKey.replace(/\\n/g, "\n");
+  // Limpiar posibles comillas agregadas al copiar/pegar en paneles como Vercel
+  const cleanSheetId = sheetId.trim().replace(/^["']|["']$/g, "");
+  const cleanEmail = clientEmail.trim().replace(/^["']|["']$/g, "");
+
+  let cleanKey = privateKey.trim();
+  if (
+    (cleanKey.startsWith('"') && cleanKey.endsWith('"')) ||
+    (cleanKey.startsWith("'") && cleanKey.endsWith("'"))
+  ) {
+    cleanKey = cleanKey.slice(1, -1);
+  }
+  // Reemplazar saltos de línea literales '\n' por saltos de línea reales
+  cleanKey = cleanKey.replace(/\\n/g, "\n");
 
   // Tolerancia de 5 minutos ante desfase de reloj local de la máquina
   const now = Math.floor(Date.now() / 1000) - 300;
 
   const auth = new google.auth.JWT({
-    email: clientEmail,
-    key: privateKey,
+    email: cleanEmail,
+    key: cleanKey,
     scopes: ["https://www.googleapis.com/auth/spreadsheets"],
     additionalClaims: {
       iat: now,
@@ -86,7 +102,7 @@ function getGoogleAuth() {
     },
   });
 
-  return { auth, sheetId };
+  return { auth, sheetId: cleanSheetId };
 }
 
 /**

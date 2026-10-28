@@ -83,7 +83,7 @@ export default function RSVPSection({ guest }: RSVPSectionProps) {
         src="/images/flores/Separador.png"
         size="full"
         position="top"
-        className="pt-4 sm:pt-6 pb-2 sm:pb-3"
+        className="pt-8 sm:pt-10 pb-2 sm:pb-3"
       />
 
       <div className="mx-auto max-w-3xl px-6 pb-24 pt-3 text-center sm:pb-32 sm:pt-4">

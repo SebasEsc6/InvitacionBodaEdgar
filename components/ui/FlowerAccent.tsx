@@ -11,15 +11,14 @@ export interface FlowerAccentProps {
 
 /**
  * Flores laterales botánicas fotorrealistas.
- * Como los archivos PNG tienen el ramillete en un tercio del canvas (y el resto transparente),
- * este componente utiliza anchos proporcionales para que las rosas blancas y hojas de eucalipto
- * entren con presencia y belleza visible en los laterales, tal como en la imagen de referencia.
+ * Diseñadas para que las rosas blancas y follaje asomen en los márgenes
+ * de la pantalla con presencia y elegancia, SIN invadir ni tapar el texto de lectura.
  */
 export default function FlowerAccent({
   side,
   src,
   className = "top-20",
-  size = "lg",
+  size = "md",
   offset = "balanced",
   imageClassName = "",
 }: FlowerAccentProps) {
@@ -30,30 +29,30 @@ export default function FlowerAccent({
 
   const resolvedSrc = src || defaultSrc;
 
-  // Anchos generosos: dado que las flores ocupan ~35% del archivo,
-  // estos anchos garantizan que se vean entre 80px y 160px de rosas blancas y follaje
+  // Anchos calibrados por breakpoint:
+  // En móvil (< 640px): se limitan a 110px-144px (~38px-50px visibles) para nunca pisar el texto.
+  // En tablet/desktop (sm, md, lg): se expanden libremente hacia afuera donde hay espacio abundante.
   const sizeClasses = {
-    sm: "w-44 sm:w-56 md:w-68 lg:w-80",
-    md: "w-52 sm:w-68 md:w-80 lg:w-96",
-    lg: "w-60 sm:w-80 md:w-96 lg:w-[440px] xl:w-[480px]",
-    xl: "w-72 sm:w-96 md:w-[440px] lg:w-[520px] xl:w-[560px]",
+    sm: "w-24 sm:w-36 md:w-48 lg:w-64 max-h-[380px]",
+    md: "w-32 sm:w-48 md:w-64 lg:w-80 max-h-[500px]",
+    lg: "w-36 sm:w-56 md:w-72 lg:w-88 max-h-[620px]",
+    xl: "w-44 sm:w-68 md:w-88 lg:w-[420px] max-h-[720px]",
   }[size];
 
-  // Alineación al borde: 'balanced' alinea la flor justo al borde de la pantalla (translate-x-0)
-  // de modo que no se empuja fuera y las rosas blancas quedan 100% a la vista.
+  // Alineación al borde de pantalla
   const offsetClasses = {
     subtle:
       side === "left"
-        ? "left-0 -translate-x-10 sm:-translate-x-14"
-        : "right-0 translate-x-10 sm:translate-x-14",
+        ? "left-0 -translate-x-6 sm:-translate-x-10"
+        : "right-0 translate-x-6 sm:translate-x-10",
     balanced:
       side === "left"
         ? "left-0 translate-x-0"
         : "right-0 translate-x-0",
     prominent:
       side === "left"
-        ? "left-0 translate-x-4 sm:translate-x-8"
-        : "right-0 -translate-x-4 sm:-translate-x-8",
+        ? "left-0 translate-x-3 sm:translate-x-6"
+        : "right-0 -translate-x-3 sm:-translate-x-6",
     none: side === "left" ? "left-0" : "right-0",
   }[offset];
 
@@ -68,7 +67,7 @@ export default function FlowerAccent({
         alt=""
         loading="lazy"
         decoding="async"
-        className={`block h-auto ${sizeClasses} select-none opacity-95 object-contain drop-shadow-[0_12px_28px_rgba(0,0,0,0.3)] filter transition-all duration-300 ${imageClassName}`}
+        className={`block h-auto ${sizeClasses} select-none opacity-95 object-contain drop-shadow-[0_8px_20px_rgba(0,0,0,0.25)] filter transition-all duration-300 ${imageClassName}`}
       />
     </div>
   );

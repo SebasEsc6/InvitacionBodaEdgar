@@ -42,32 +42,30 @@ const events: TimelineEvent[] = [
 
 export default function TimelineSection() {
   return (
-    <section id="cronograma" className="bg-paper-beige relative z-10 overflow-hidden px-4 py-20 sm:px-8 sm:py-28">
+    <section id="cronograma" className="bg-paper-beige relative z-10 px-4 py-20 sm:px-8 sm:py-28">
       <TornEdge position="top" seed={7} />
       <TornEdge position="bottom" seed={23} />
 
       {/*
-        Flores laterales inspiradas en la referencia:
-        - Izquierda: asoma junto a los primeros eventos (Recepción / Ceremonia)
-        - Derecha: asoma junto a los eventos intermedios (Cóctel / Cena)
-        - offset="balanced": garantiza que solo entren las hojas hacia los márgenes sin tocar el texto
+        Flores laterales calibradas para móvil:
+        - Asoman en los márgenes exteriores sin pisar el texto en pantallas pequeñas
       */}
       <FlowerAccent
         side="left"
         src="/images/flores/LateralIzq.png"
-        size="lg"
+        size="md"
         offset="balanced"
-        className="top-40 sm:top-48 md:top-56"
+        className="top-36 sm:top-44 md:top-52"
       />
       <FlowerAccent
         side="right"
         src="/images/flores/LateralDer.png"
-        size="lg"
+        size="md"
         offset="balanced"
-        className="top-[55%] sm:top-[58%]"
+        className="top-[54%] sm:top-[56%]"
       />
 
-      <div className="relative z-10 mx-auto max-w-lg px-6 sm:px-10">
+      <div className="relative z-10 mx-auto max-w-[270px] sm:max-w-lg px-2 sm:px-10">
         <SectionHeading
           title="Cronograma"
           subtitle="Programa del gran día"

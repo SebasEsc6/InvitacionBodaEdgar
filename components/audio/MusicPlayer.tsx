@@ -64,10 +64,18 @@ export default function MusicPlayer({
     }
   };
 
+  // Ocultar globo automáticamente tras 6 segundos para no invadir la pantalla en móviles
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowPrompt(false);
+    }, 6000);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <aside
       aria-label="Reproductor musical de la boda"
-      className="fixed bottom-6 right-6 z-50 flex flex-col items-end pointer-events-auto select-none"
+      className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col items-end pointer-events-auto select-none"
     >
       {/* Elemento de audio nativo HTML5 (reproduce en segundo plano sin cortes) */}
       {hasLocalAudio && (
