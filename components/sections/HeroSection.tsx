@@ -41,11 +41,11 @@ export default function HeroSection({ guest, guestName, cupos }: HeroSectionProp
     currentGuest ||
     (guestName
       ? ({
-          id_invitacion: "",
-          nombre_grupo: guestName,
-          cupos: cupos || 1,
-          estado: "Pendiente" as const,
-        } as GuestInvitation)
+        id_invitacion: "",
+        nombre_grupo: guestName,
+        cupos: cupos || 1,
+        estado: "Pendiente" as const,
+      } as GuestInvitation)
       : undefined);
 
   const isAnswered = activeGuest?.estado === "Confirmado" || activeGuest?.estado === "Cancelado";
@@ -77,10 +77,10 @@ export default function HeroSection({ guest, guestName, cupos }: HeroSectionProp
         setCurrentGuest((prev) =>
           prev
             ? {
-                ...prev,
-                estado: "Confirmado",
-                asistentes_confirmados: prev.cupos,
-              }
+              ...prev,
+              estado: "Confirmado",
+              asistentes_confirmados: prev.cupos,
+            }
             : undefined
         );
         triggerConfetti();
@@ -104,10 +104,10 @@ export default function HeroSection({ guest, guestName, cupos }: HeroSectionProp
         setCurrentGuest((prev) =>
           prev
             ? {
-                ...prev,
-                estado: "Cancelado",
-                asistentes_confirmados: 0,
-              }
+              ...prev,
+              estado: "Cancelado",
+              asistentes_confirmados: 0,
+            }
             : undefined
         );
       } else {
@@ -207,11 +207,10 @@ export default function HeroSection({ guest, guestName, cupos }: HeroSectionProp
                 /* Estado 1: Ya respondido (Confirmado o Cancelado) */
                 <div className="space-y-4">
                   <div
-                    className={`mx-auto flex h-14 w-14 items-center justify-center rounded-full shadow-md ${
-                      activeGuest.estado === "Confirmado"
-                        ? "border border-emerald-400/50 bg-emerald-900/60 text-emerald-300"
-                        : "border border-stone-400/40 bg-stone-800/60 text-stone-300"
-                    }`}
+                    className={`mx-auto flex h-14 w-14 items-center justify-center rounded-full shadow-md ${activeGuest.estado === "Confirmado"
+                      ? "border border-emerald-400/50 bg-emerald-900/60 text-emerald-300"
+                      : "border border-stone-400/40 bg-stone-800/60 text-stone-300"
+                      }`}
                   >
                     {activeGuest.estado === "Confirmado" ? (
                       <CheckCircle2 className="h-8 w-8 text-emerald-300" />
@@ -359,7 +358,7 @@ export default function HeroSection({ guest, guestName, cupos }: HeroSectionProp
         )}
 
         <FadeUp delay={0.45}>
-          <p className="mt-6 max-w-md font-sans text-xs sm:text-sm leading-relaxed text-marfil/80 font-light">
+          <p className="mt-6 max-w-md font-sans text-xs sm:text-sm leading-relaxed text-marfil font-medium">
             Tenemos el honor de invitarte a celebrar el inicio de nuestra vida juntos.
           </p>
           <p className="mt-3 font-serif text-lg sm:text-xl font-normal text-dorado-antiguo-light">

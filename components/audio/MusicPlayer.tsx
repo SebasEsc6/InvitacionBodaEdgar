@@ -1,53 +1,92 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
-import { Volume2, VolumeX, Play, Pause, Music, ExternalLink, ChevronDown, ChevronUp } from "lucide-react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { Play, Pause, Music, ExternalLink, ChevronDown, ChevronUp } from "lucide-react";
 
 interface MusicPlayerProps {
   /** Enlace o ID de la canción en Spotify como respaldo */
   trackId?: string;
   /** Ruta al archivo de audio local (alojado en public/audio/) */
   audioSrc?: string;
+  /** Si debe intentar reproducir automáticamente al iniciar la página */
+  autoPlay?: boolean;
 }
 
 export default function MusicPlayer({
   trackId = "4l5HZ6iRc2oN5NtcT141yq",
   audioSrc = "/audio/musica.mp3",
+  autoPlay = true,
 }: MusicPlayerProps) {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [hasLocalAudio, setHasLocalAudio] = useState<boolean>(false);
-  const [isMuted, setIsMuted] = useState<boolean>(false);
+  const [hasLocalAudio, setHasLocalAudio] = useState<boolean>(true);
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
-  const [showPrompt, setShowPrompt] = useState<boolean>(true);
+  const [showPrompt, setShowPrompt] = useState<boolean>(false);
+
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const userPausedRef = useRef<boolean>(false);
+  const hasStartedRef = useRef<boolean>(false);
 
-  // Verificar si existe el archivo de audio local en /audio/musica.mp3
+  // Función para iniciar la reproducción de forma segura
+  const startPlayback = useCallback(async () => {
+    if (!audioRef.current || userPausedRef.current || hasStartedRef.current) return;
+
+    try {
+      audioRef.current.volume = 0.7;
+      await audioRef.current.play();
+      hasStartedRef.current = true;
+      setIsPlaying(true);
+      setShowPrompt(false);
+    } catch {
+      // Si las directivas de autoplay del navegador bloquean la reproducción sin gesto previo,
+      // activamos el indicador sutil para invitar a la primera interacción
+      setShowPrompt(true);
+    }
+  }, []);
+
+  // Autoplay inteligente:
+  // 1. Intento inmediato directo en el montaje.
+  // 2. Si el navegador lo bloquea, se inicia con el primer clic, toque o desplazamiento del usuario.
   useEffect(() => {
-    fetch(audioSrc, { method: "HEAD" })
-      .then((res) => {
-        if (res.ok) {
-          setHasLocalAudio(true);
-        }
-      })
-      .catch(() => {
-        setHasLocalAudio(false);
-      });
-  }, [audioSrc]);
+    if (!autoPlay) return;
 
-  // Manejo de reproducción / pausa en audio local
+    // 1. Intento directo inmediato
+    startPlayback();
+
+    // 2. Escuchar la primera interacción en cualquier parte de la ventana
+    const handleFirstInteraction = () => {
+      if (userPausedRef.current || hasStartedRef.current) return;
+      startPlayback();
+    };
+
+    const interactionEvents = ["click", "touchstart", "scroll", "keydown"] as const;
+    interactionEvents.forEach((event) => {
+      window.addEventListener(event, handleFirstInteraction, { passive: true, once: true });
+    });
+
+    return () => {
+      interactionEvents.forEach((event) => {
+        window.removeEventListener(event, handleFirstInteraction);
+      });
+    };
+  }, [autoPlay, startPlayback]);
+
+  // Manejo de reproducción / pausa manual del usuario
   const togglePlay = () => {
     setShowPrompt(false);
 
     if (hasLocalAudio && audioRef.current) {
       if (isPlaying) {
+        userPausedRef.current = true;
         audioRef.current.pause();
         setIsPlaying(false);
       } else {
+        userPausedRef.current = false;
+        hasStartedRef.current = true;
         audioRef.current
           .play()
           .then(() => setIsPlaying(true))
           .catch((err) => {
-            console.warn("Reproducción bloqueada por el navegador:", err);
+            console.warn("Reproducción no permitida por el navegador:", err);
             setIsPlaying(false);
           });
       }
@@ -57,20 +96,15 @@ export default function MusicPlayer({
     }
   };
 
-  const toggleMute = () => {
-    if (audioRef.current) {
-      audioRef.current.muted = !isMuted;
-      setIsMuted(!isMuted);
-    }
-  };
-
-  // Ocultar globo automáticamente tras 6 segundos para no invadir la pantalla en móviles
+  // Ocultar globo flotante automáticamente tras 6 segundos para no recargar la pantalla
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowPrompt(false);
-    }, 6000);
-    return () => clearTimeout(timer);
-  }, []);
+    if (showPrompt) {
+      const timer = setTimeout(() => {
+        setShowPrompt(false);
+      }, 6000);
+      return () => clearTimeout(timer);
+    }
+  }, [showPrompt]);
 
   return (
     <aside
@@ -84,12 +118,22 @@ export default function MusicPlayer({
           src={audioSrc}
           loop
           preload="auto"
-          onPlay={() => setIsPlaying(true)}
+          playsInline
+          onCanPlay={() => {
+            if (autoPlay && !hasStartedRef.current && !userPausedRef.current) {
+              startPlayback();
+            }
+          }}
+          onPlay={() => {
+            setIsPlaying(true);
+            hasStartedRef.current = true;
+          }}
           onPause={() => setIsPlaying(false)}
+          onError={() => setHasLocalAudio(false)}
         />
       )}
 
-      {/* Globo sutil de bienvenida en la primera visita */}
+      {/* Globo sutil de bienvenida si el navegador requiere un primer toque */}
       {showPrompt && !isPlaying && (
         <div
           onClick={togglePlay}
