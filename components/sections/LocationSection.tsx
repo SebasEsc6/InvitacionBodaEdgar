@@ -1,17 +1,25 @@
 "use client";
 
 import React from "react";
-import { BellRing, Navigation } from "lucide-react";
+import { Navigation } from "lucide-react";
 import FadeUp from "../animations/FadeUp";
 import SectionHeading from "../ui/SectionHeading";
 import SmartImage from "../ui/SmartImage";
+import FlowerDivider from "../ui/FlowerDivider";
 import { photoSources } from "@/lib/assets";
 
 export default function LocationSection() {
   return (
-    <section id="ubicacion" className="section-dark relative pb-28 pt-24 text-marfil sm:pt-32">
+    <section id="ubicacion" className="section-dark relative pb-28 pt-32 text-marfil sm:pt-36 overflow-visible">
+      {/* Separador floral sobrepuesto en la intersección entre Detalles y Ubicación */}
+      <FlowerDivider
+        src="/images/flores/Separador.png"
+        size="full"
+        position="intersection"
+      />
+
       <div className="mx-auto max-w-3xl px-6 text-center">
-        <SectionHeading title="Location" subtitle="Lugar de la celebración" />
+        <SectionHeading title="Ubicación" subtitle="Lugar de la celebración" />
 
         <FadeUp delay={0.1}>
           <p className="mx-auto mt-6 max-w-md font-sans text-xs sm:text-sm leading-relaxed text-marfil/75 font-light">
@@ -41,24 +49,11 @@ export default function LocationSection() {
             Próximamente compartiremos las coordenadas exactas y enlaces directos de Google Maps y Waze.
           </p>
 
-          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <button
-              type="button"
-              className="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full border border-dorado-antiguo/50 bg-gradient-to-b from-verde-bosque-light to-verde-bosque px-7 py-3 font-sans text-xs uppercase tracking-wider text-marfil shadow-md transition-all hover:border-dorado-antiguo hover:brightness-110 sm:w-auto"
-              onClick={() => alert("Te enviaremos la ubicación exacta en cuanto esté revelada.")}
-            >
-              <BellRing className="h-3.5 w-3.5 text-dorado-antiguo-light" />
-              <span>Notificarme al confirmar</span>
-            </button>
-
-            <button
-              type="button"
-              disabled
-              className="inline-flex w-full cursor-not-allowed items-center justify-center gap-2 rounded-full border border-marfil/15 px-7 py-3 font-sans text-xs uppercase tracking-wider text-marfil/45 sm:w-auto"
-            >
-              <Navigation className="h-3.5 w-3.5" />
+          <div className="mt-8 flex justify-center">
+            <div className="inline-flex items-center gap-2 rounded-full border border-dorado-antiguo/30 bg-verde-bosque-deep/60 px-6 py-2.5 font-sans text-xs uppercase tracking-wider text-dorado-antiguo-light shadow-sm backdrop-blur-sm">
+              <Navigation className="h-3.5 w-3.5 text-dorado-antiguo" />
               <span>Mapa disponible pronto</span>
-            </button>
+            </div>
           </div>
         </FadeUp>
       </div>

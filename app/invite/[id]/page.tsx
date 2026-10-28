@@ -5,9 +5,8 @@ import HeroSection from "@/components/sections/HeroSection";
 import WelcomeSection from "@/components/sections/WelcomeSection";
 import TimelineSection from "@/components/sections/TimelineSection";
 import DressCodeSection from "@/components/sections/DressCodeSection";
-import LocationSection from "@/components/sections/LocationSection";
 import GiftSection from "@/components/sections/GiftSection";
-import RSVPSection from "@/components/sections/RSVPSection";
+import LocationSection from "@/components/sections/LocationSection";
 import MusicPlayer from "@/components/audio/MusicPlayer";
 import FooterSection from "@/components/sections/FooterSection";
 
@@ -50,8 +49,8 @@ export default async function InvitePage({ params }: InvitePageProps) {
 
   return (
     <main className="relative min-h-screen overflow-x-clip bg-verde-bosque-deep text-marfil selection:bg-verde-salvia selection:text-marfil">
-      {/* 1. Hero / Portada */}
-      <HeroSection guestName={guest.nombre_grupo} cupos={guest.cupos} />
+      {/* 1. Hero / Portada con confirmación RSVP interactiva directa */}
+      <HeroSection guest={guest} />
 
       {/* 2. Mensaje de Bienvenida */}
       <WelcomeSection />
@@ -62,18 +61,16 @@ export default async function InvitePage({ params }: InvitePageProps) {
       {/* 4. Dress Code */}
       <DressCodeSection />
 
-      {/* 5. Ubicación / Location */}
-      <LocationSection />
-
-      {/* 6. Detalles (Lluvia de Sobres) */}
+      {/* 5. Detalles (Lluvia de Sobres) */}
       <GiftSection />
 
-      {/* 7. RSVP (Formulario dinámico condicional) */}
-      <RSVPSection guest={guest} />
+      {/* 6. Ubicación (con flores separadoras entre Detalles y Ubicación) */}
+      <LocationSection />
 
       {/* Floating Ambient Spotify / Music Player */}
       <MusicPlayer trackId="4l5HZ6iRc2oN5NtcT141yq" />
 
+      {/* 7. Footer de Cierre */}
       <FooterSection />
     </main>
   );

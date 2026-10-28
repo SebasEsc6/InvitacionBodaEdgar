@@ -16,8 +16,8 @@ export default function HomePage() {
       <WelcomeSection />
       <TimelineSection />
       <DressCodeSection />
-      <LocationSection />
       <GiftSection />
+      <LocationSection />
 
       {/* Consulta de Mesa y Asignación */}
       <TableSearchSection />
