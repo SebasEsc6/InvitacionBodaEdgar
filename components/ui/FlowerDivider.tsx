@@ -32,6 +32,13 @@ export interface FlowerDividerProps {
   position?: "intersection" | "top" | "bottom-flush" | "bottom" | "inline" | "absolute-top" | "absolute-bottom";
 
   /**
+   * Si es true, el separador solo se muestra en versión móvil (< 768px)
+   * y se oculta en computadores/escritorio (md:hidden).
+   * Por defecto: true para separadores de tipo intersección horizontal.
+   */
+  mobileOnly?: boolean;
+
+  /**
    * Si es true, sobresale 50% hacia la sección adyacente (-translate-y-1/2).
    */
   overlap?: boolean;
@@ -81,6 +88,7 @@ export default function FlowerDivider({
   edge,
   size = "full",
   position = "intersection",
+  mobileOnly = true,
   overlap = false,
   offsetY = "",
   maxHeight,
@@ -156,7 +164,9 @@ export default function FlowerDivider({
   return (
     <div
       aria-hidden="true"
-      className={`pointer-events-none select-none absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 z-20 flex justify-center items-center ${sizeContainerClasses} ${className}`}
+      className={`pointer-events-none select-none absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 z-20 ${
+        mobileOnly ? "flex md:hidden" : "flex"
+      } justify-center items-center ${sizeContainerClasses} ${className}`}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img

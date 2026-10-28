@@ -43,7 +43,7 @@ export default function TableSearchSection() {
         position="intersection"
       />
 
-      <div className="mx-auto max-w-3xl px-6 pb-24 pt-32 text-center sm:pb-32 sm:pt-40 md:pt-44 lg:pt-52">
+      <div className="mx-auto max-w-3xl px-6 pb-24 pt-32 text-center sm:pb-32 sm:pt-36 md:pt-24 lg:pt-28">
         <SectionHeading title="Ubicación de Mesas" subtitle="Encuentra tu lugar de honor" />
 
         <FadeUp delay={0.1}>

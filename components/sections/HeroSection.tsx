@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, CheckCircle } from "lucide-react";
 import FadeUp from "../animations/FadeUp";
 import SmartImage from "../ui/SmartImage";
 import { photoSources } from "@/lib/assets";
@@ -62,7 +62,7 @@ export default function HeroSection({ guestName, cupos }: HeroSectionProps) {
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-verde-bosque-deep/30 via-transparent to-verde-bosque-deep/90" />
       <div className="absolute inset-x-0 bottom-0 -z-10 h-1/2 bg-gradient-to-t from-verde-bosque-deep via-verde-bosque-deep/60 to-transparent" />
 
-      <div className="mx-auto flex w-full max-w-4xl flex-col items-center px-6 pt-20 pb-32 text-center sm:pt-28 sm:pb-40 md:pt-36 md:pb-52 lg:pt-40 lg:pb-60">
+      <div className="mx-auto flex w-full max-w-4xl flex-col items-center px-6 pt-20 pb-32 text-center sm:pt-28 sm:pb-36 md:pt-36 md:pb-32 lg:pt-40 lg:pb-36">
         {/* Nombres principales en la tipografía Great Vibes (cursiva clásica de boda) */}
         <FadeUp delay={0.15}>
           <h1
@@ -104,10 +104,19 @@ export default function HeroSection({ guestName, cupos }: HeroSectionProps) {
                   {cupos} {cupos === 1 ? "cupo reservado" : "cupos reservados"}
                 </p>
               )}
-              <div className="mt-3 pt-2.5 border-t border-dorado-antiguo/20 flex justify-center">
+              {/* Botón principal de confirmación inmediata */}
+              <div className="mt-4 flex flex-col items-center gap-2 pt-2 border-t border-dorado-antiguo/20">
+                <a
+                  href="#rsvp"
+                  className="group inline-flex items-center justify-center gap-2 rounded-full border border-dorado-antiguo bg-gradient-to-r from-dorado-antiguo-dark via-dorado-antiguo to-dorado-antiguo-light px-6 py-2.5 font-sans text-xs font-semibold uppercase tracking-[0.15em] text-verde-bosque-deep shadow-gold transition-all duration-300 hover:scale-105 hover:shadow-luxury active:scale-95"
+                >
+                  <CheckCircle className="h-4 w-4 text-verde-bosque-deep transition-transform duration-300 group-hover:scale-110" />
+                  <span>Confirmar Asistencia</span>
+                </a>
+
                 <Link
                   href="/"
-                  className="inline-flex items-center gap-1.5 font-sans text-xs text-dorado-antiguo-light/90 hover:text-marfil transition-colors"
+                  className="inline-flex items-center gap-1.5 font-sans text-xs text-dorado-antiguo-light/80 hover:text-marfil transition-colors pt-1"
                 >
                   <ArrowLeft className="w-3.5 h-3.5" />
                   <span>Ir a la página principal</span>

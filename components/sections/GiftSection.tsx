@@ -18,7 +18,7 @@ export default function GiftSection() {
   };
 
   return (
-    <section id="regalo" className="bg-paper-beige relative z-10 px-4 pt-20 sm:pt-28 pb-36 sm:pb-48 md:pb-56 lg:pb-64">
+    <section id="regalo" className="bg-paper-beige relative z-10 px-4 pt-20 sm:pt-28 pb-40 sm:pb-48 md:pb-28 lg:pb-32">
       <TornEdge position="top" seed={41} />
       <TornEdge position="bottom" seed={59} />
 
