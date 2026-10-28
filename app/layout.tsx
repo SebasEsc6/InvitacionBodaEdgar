@@ -26,10 +26,10 @@ const greatVibes = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Nuestra Boda | Edgar & María",
+  title: "Nuestra Boda | Edgar & Camila",
   description: "Acompáñanos a celebrar nuestra unión matrimonial el 5 de diciembre de 2026. Confirma tu asistencia.",
   openGraph: {
-    title: "Nuestra Boda | Edgar & María",
+    title: "Nuestra Boda | Edgar & Camila",
     description: "Una celebración de amor, naturaleza y elegancia. 5 de diciembre de 2026.",
     type: "website",
   },

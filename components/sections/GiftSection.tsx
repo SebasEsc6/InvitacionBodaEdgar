@@ -78,7 +78,7 @@ export default function GiftSection() {
                   <p className="text-[10px] font-medium uppercase tracking-wider text-verde-salvia-dark">
                     Titular de la cuenta
                   </p>
-                  <p className="text-sm font-medium text-verde-bosque">Edgar &amp; Pareja</p>
+                  <p className="text-sm font-medium text-verde-bosque">Edgar &amp; Camila</p>
                 </div>
 
                 <div className="flex items-center justify-between gap-3 rounded-xl border border-yute-natural/30 bg-marfil p-3">

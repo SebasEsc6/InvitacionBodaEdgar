@@ -7,7 +7,7 @@ interface WaxSealProps {
 }
 
 export default function WaxSeal({
-  initials = "E & M",
+  initials = "E & C",
   size = "md",
   className = "",
 }: WaxSealProps) {

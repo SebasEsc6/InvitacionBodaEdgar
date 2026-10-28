@@ -28,13 +28,13 @@ export async function generateMetadata({ params }: InvitePageProps) {
 
   if (!guest) {
     return {
-      title: "Invitación de Boda | Edgar & María",
+      title: "Invitación de Boda | Edgar & Camila",
       description: "Invitación digital interactiva para nuestra boda el 5 de diciembre de 2026.",
     };
   }
 
   return {
-    title: `Invitación para ${guest.nombre_grupo} | Boda Edgar & María`,
+    title: `Invitación para ${guest.nombre_grupo} | Boda Edgar & Camila`,
     description: `Acompáñanos a celebrar nuestra unión matrimonial el 5 de diciembre de 2026. ${guest.cupos} cupo(s) reservado(s).`,
   };
 }

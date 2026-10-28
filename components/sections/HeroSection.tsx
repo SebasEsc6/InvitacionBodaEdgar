@@ -52,7 +52,7 @@ export default function HeroSection({ guestName, cupos }: HeroSectionProps) {
       {/* Foto de portada con encuadre responsivo adaptativo */}
       <SmartImage
         sources={photoSources("portada")}
-        alt="Edgar y María"
+        alt="Edgar y Camila"
         fetchPriority="high"
         className="absolute inset-0 -z-20 h-full w-full object-cover object-[50%_20%] sm:object-[50%_28%]"
       />

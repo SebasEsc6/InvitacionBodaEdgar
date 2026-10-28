@@ -27,7 +27,7 @@ El diseño debe basarse en un contraste elegante, utilizando tipografías Serif 
 * **Madera Nogal:** `#805D40` (Mobiliario, textos secundarios oscuros)
 
 ### Estructura de Secciones (Long-Scroll):
-1. **Hero / Portada:** Foto a pantalla completa (`portada`), nombres grandes centrados y legibles ("Edgar y María" con 'y' elegante), fecha y cuenta regresiva sobria (sin botón de deslizar ni badges tipo eyebrow).
+1. **Hero / Portada:** Foto a pantalla completa (`portada`), nombres grandes centrados y legibles ("Edgar y Camila" con 'y' elegante), fecha y cuenta regresiva sobria (sin botón de deslizar ni badges tipo eyebrow).
 2. **Mensaje de Bienvenida:** Texto cálido y romántico sobre verde oscuro, con la fecha grande.
 3. **Cronograma (Timing):** Horas grandes en serif centradas, título y descripción (sin tarjetas).
 4. **Dress Code:** Texto + foto de ambiente (`dresscode`) con círculos de la paleta reservada encima.
@@ -48,7 +48,7 @@ Se tomó como referencia una invitación larga en columna con secciones que **al
   * Títulos y acentos serif: **Bodoni Moda** (alta costura editorial, contraste refinado, kerning cerrado/elegante).
   * Textos descriptivos: **Montserrat** limpia y legible.
 * **Cero elementos tipo 'IA':** Prohibidos los eyebrows con puntitos/tracking robótico (`WEDDING · ...`), prohibidos los botones de 'deslizar hacia abajo' con flechas rebotando, y prohibidos los badges/pills con iconos genéricos. Títulos y subtítulos limpios, centrados y con respiración natural.
-* **Nombres:** "Edgar y María" destacados con máxima legibilidad en Great Vibes y conector "y".
+* **Nombres:** "Edgar y Camila" destacados con máxima legibilidad en Great Vibes y conector "y".
 * **Fotos responsivas:** sin cortes agresivos en móvil o PC (`aspect-[16/10] sm:aspect-[16/9]` y `object-cover object-center`).
 * **Música integrada:** soporte nativo para `public/audio/musica.mp3` con reproducción fluida continua y fallback a Spotify.
 * **Botones:** pill con degradado verde y borde dorado fino (sobre oscuro) o contorno verde (sobre papel beige).

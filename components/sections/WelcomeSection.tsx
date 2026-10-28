@@ -61,7 +61,7 @@ export default function WelcomeSection() {
             style={{ fontFamily: "'Great Vibes', 'Great Vibes Local', var(--font-great-vibes), cursive" }}
             className="mt-6 font-title text-3xl sm:text-4xl text-dorado-antiguo-light"
           >
-            Edgar y María
+            Edgar y Camila
           </p>
         </FadeUp>
       </div>

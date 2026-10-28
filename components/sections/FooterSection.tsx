@@ -23,13 +23,13 @@ export default function FooterSection() {
 
         <FadeUp delay={0.15}>
           <div className="mt-8 flex justify-center">
-            <WaxSeal initials="E y M" size="md" className="animate-float-gentle" />
+            <WaxSeal initials="E y C" size="md" className="animate-float-gentle" />
           </div>
           <p
             style={{ fontFamily: "'Great Vibes', 'Great Vibes Local', var(--font-great-vibes), cursive" }}
             className="mt-6 font-title text-3xl sm:text-5xl text-dorado-antiguo-light"
           >
-            Edgar y María
+            Edgar y Camila
           </p>
           <p className="mt-2 font-sans text-xs uppercase tracking-widest text-yute-natural font-light">
             05 de Diciembre de 2026
