@@ -35,16 +35,15 @@ export default function TableSearchSection() {
   };
 
   return (
-    <section id="mesas" className="section-dark-alt relative text-marfil overflow-hidden">
-      {/* Separador floral que corona el inicio de la sección */}
+    <section id="mesas" className="section-dark-alt relative text-marfil overflow-visible">
+      {/* Separador floral sobrepuesto en la intersección con la sección anterior */}
       <FlowerDivider
         src="/images/flores/Separador.png"
         size="full"
-        position="top"
-        className="pt-8 sm:pt-10 pb-2 sm:pb-3"
+        position="intersection"
       />
 
-      <div className="mx-auto max-w-3xl px-6 pb-24 pt-3 text-center sm:pb-32 sm:pt-4">
+      <div className="mx-auto max-w-3xl px-6 pb-24 pt-32 text-center sm:pb-32 sm:pt-40 md:pt-44">
         <SectionHeading title="Ubicación de Mesas" subtitle="Encuentra tu lugar de honor" />
 
         <FadeUp delay={0.1}>

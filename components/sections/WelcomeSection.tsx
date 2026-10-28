@@ -6,21 +6,19 @@ export default function WelcomeSection() {
   return (
     <section
       id="bienvenida"
-      className="section-dark relative text-center text-marfil overflow-hidden"
+      className="section-dark relative text-center text-marfil overflow-visible"
     >
       {/*
-        Separador floral superior inmersivo de borde a borde:
-        - Para cambiar la imagen: edita la propiedad 'src' (ej: "/images/flores/Separador.png")
-        - Para cambiar el tamaño: cambia 'size' ("full", "lg", "md", "sm") o añade maxHeight/className
+        Separador floral sobrepuesto en la intersección Hero/Bienvenida:
+        - Queda sobrepuesto al 50% entre ambas secciones sin ocupar un div con espacio vertical en el layout.
       */}
       <FlowerDivider
         src="/images/flores/Separador.png"
         size="full"
-        position="top"
-        className="pt-3 sm:pt-5 pb-2"
+        position="intersection"
       />
 
-      <div className="mx-auto max-w-2xl px-6 pb-20 pt-2 sm:pb-28 sm:pt-4">
+      <div className="mx-auto max-w-2xl px-6 pb-20 pt-32 sm:pb-28 sm:pt-40 md:pt-48">
         <FadeUp>
           <h2
             style={{ fontFamily: "'Great Vibes', 'Great Vibes Local', var(--font-great-vibes), cursive" }}

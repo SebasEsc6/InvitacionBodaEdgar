@@ -35,6 +35,8 @@ export const metadata: Metadata = {
   },
 };
 
+import SiteNav from "@/components/navigation/SiteNav";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -54,6 +56,7 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen bg-verde-bosque-deep text-marfil antialiased selection:bg-verde-salvia selection:text-marfil">
+        <SiteNav />
         {children}
       </body>
     </html>

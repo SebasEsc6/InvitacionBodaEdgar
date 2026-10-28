@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 import FadeUp from "../animations/FadeUp";
 import SmartImage from "../ui/SmartImage";
 import { photoSources } from "@/lib/assets";
@@ -102,6 +104,15 @@ export default function HeroSection({ guestName, cupos }: HeroSectionProps) {
                   {cupos} {cupos === 1 ? "cupo reservado" : "cupos reservados"}
                 </p>
               )}
+              <div className="mt-3 pt-2.5 border-t border-dorado-antiguo/20 flex justify-center">
+                <Link
+                  href="/"
+                  className="inline-flex items-center gap-1.5 font-sans text-xs text-dorado-antiguo-light/90 hover:text-marfil transition-colors"
+                >
+                  <ArrowLeft className="w-3.5 h-3.5" />
+                  <span>Ir a la página principal</span>
+                </Link>
+              </div>
             </div>
           </FadeUp>
         )}

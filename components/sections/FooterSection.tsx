@@ -1,17 +1,25 @@
+"use client";
+
 import React from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { ArrowLeft, Search } from "lucide-react";
 import FadeUp from "../animations/FadeUp";
 import FlowerDivider from "../ui/FlowerDivider";
 import WaxSeal from "../ui/WaxSeal";
 
 /**
  * Cierre de la invitación (compartido por la home y /invite/[id]).
- * Inspirado en la composición de referencia:
- * Mensaje '¡Te esperamos!' -> Sello de cera -> Nombres -> Ramillete floral final de borde a borde.
+ * - Mensaje '¡Te esperamos!' -> Sello de cera -> Nombres -> Navegación contextual.
+ * - Ramillete floral final pegado al ras inferior de la página con offset sutil hacia abajo.
  */
 export default function FooterSection() {
+  const pathname = usePathname();
+  const isInvitePage = pathname.startsWith("/invite");
+
   return (
-    <footer className="section-deep relative text-center text-marfil/80 overflow-hidden pt-16 sm:pt-20 pb-10 sm:pb-16">
-      <div className="mx-auto max-w-2xl px-6 pb-6">
+    <footer className="section-deep relative text-center text-marfil/80 overflow-hidden pt-16 sm:pt-24 pb-44 sm:pb-56 md:pb-64">
+      <div className="relative z-20 mx-auto max-w-2xl px-6 pb-6">
         <FadeUp>
           <p
             style={{ fontFamily: "'Great Vibes', 'Great Vibes Local', var(--font-great-vibes), cursive" }}
@@ -37,18 +45,39 @@ export default function FooterSection() {
           <p className="mt-5 font-serif text-sm italic text-marfil/60">
             Con todo nuestro amor, gracias por ser parte fundamental de nuestra historia.
           </p>
+
+          {/* Navegación contextual para regresar a la home o buscar invitación */}
+          <div className="mt-8 flex justify-center">
+            {isInvitePage ? (
+              <Link
+                href="/"
+                className="group inline-flex items-center gap-2 rounded-full border border-dorado-antiguo/40 bg-verde-bosque/60 px-5 py-2.5 font-sans text-xs uppercase tracking-wider text-marfil backdrop-blur-md shadow-gold transition-all duration-300 hover:bg-verde-bosque hover:border-dorado-antiguo hover:scale-105 active:scale-95"
+              >
+                <ArrowLeft className="h-3.5 w-3.5 text-dorado-antiguo-light transition-transform duration-300 group-hover:-translate-x-1" />
+                <span>Volver a la Página Principal</span>
+              </Link>
+            ) : (
+              <a
+                href="#mesas"
+                className="group inline-flex items-center gap-2 rounded-full border border-dorado-antiguo/40 bg-verde-bosque/60 px-5 py-2.5 font-sans text-xs uppercase tracking-wider text-marfil backdrop-blur-md shadow-gold transition-all duration-300 hover:bg-verde-bosque hover:border-dorado-antiguo hover:scale-105 active:scale-95"
+              >
+                <Search className="h-3.5 w-3.5 text-dorado-antiguo-light transition-transform duration-300 group-hover:scale-110" />
+                <span>Buscar mi Invitación y Mesa</span>
+              </a>
+            )}
+          </div>
         </FadeUp>
       </div>
 
       {/*
-        Separador floral final en el pie de página de borde a borde:
-        Ocupa el 100% del ancho de pantalla cerrando la invitación como en la imagen de referencia.
+        Ramillete floral final pegado al fondo absoluto de la página:
+        - Pegado al límite inferior (0 espacio en el fondo).
+        - Ligero offset hacia abajo (translate-y-*) para que la base se funda naturalmente con el borde de la pantalla.
       */}
       <FlowerDivider
         src="/images/flores/Final.png"
         size="full"
-        position="bottom"
-        className="w-full"
+        position="bottom-flush"
       />
     </footer>
   );
