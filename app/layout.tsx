@@ -28,9 +28,20 @@ const greatVibes = localFont({
 export const metadata: Metadata = {
   title: "Nuestra Boda | Edgar & Camila",
   description: "Acompáñanos a celebrar nuestra unión matrimonial el 5 de diciembre de 2026. Confirma tu asistencia.",
+  icons: {
+    icon: [
+      { url: "/images/monograma-ec.jpg", sizes: "512x512", type: "image/jpeg" },
+      { url: "/images/monograma-ec.jpg", sizes: "192x192", type: "image/jpeg" },
+    ],
+    apple: [
+      { url: "/images/monograma-ec.jpg", sizes: "180x180", type: "image/jpeg" },
+    ],
+    shortcut: "/images/monograma-ec.jpg",
+  },
   openGraph: {
     title: "Nuestra Boda | Edgar & Camila",
     description: "Una celebración de amor, naturaleza y elegancia. 5 de diciembre de 2026.",
+    images: ["/images/monograma-ec.jpg"],
     type: "website",
   },
 };

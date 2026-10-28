@@ -26,7 +26,69 @@ export default function MusicPlayer({
   const userPausedRef = useRef<boolean>(false);
   const hasStartedRef = useRef<boolean>(false);
 
-  // Función para iniciar la reproducción de forma segura
+  // 1. Configurar metadatos del reproductor del sistema (iOS Dynamic Island, Pantalla de Bloqueo, Centro de Control, Android)
+  useEffect(() => {
+    if (typeof window !== "undefined" && "mediaSession" in navigator) {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: "Nuestra Boda",
+        artist: "Edgar & Camila",
+        album: "5 de Diciembre de 2026",
+        artwork: [
+          {
+            src: "/images/monograma-ec.jpg",
+            sizes: "512x512",
+            type: "image/jpeg",
+          },
+          {
+            src: "/images/monograma-ec.jpg",
+            sizes: "1024x1024",
+            type: "image/jpeg",
+          },
+        ],
+      });
+
+      try {
+        navigator.mediaSession.setActionHandler("play", () => {
+          userPausedRef.current = false;
+          audioRef.current?.play().then(() => setIsPlaying(true)).catch(() => {});
+        });
+        navigator.mediaSession.setActionHandler("pause", () => {
+          userPausedRef.current = true;
+          audioRef.current?.pause();
+          setIsPlaying(false);
+        });
+        navigator.mediaSession.setActionHandler("stop", () => {
+          userPausedRef.current = true;
+          audioRef.current?.pause();
+          setIsPlaying(false);
+        });
+        navigator.mediaSession.setActionHandler("seekbackward", (details) => {
+          if (audioRef.current) {
+            audioRef.current.currentTime = Math.max(audioRef.current.currentTime - (details.seekOffset || 10), 0);
+          }
+        });
+        navigator.mediaSession.setActionHandler("seekforward", (details) => {
+          if (audioRef.current) {
+            audioRef.current.currentTime = Math.min(
+              audioRef.current.currentTime + (details.seekOffset || 10),
+              audioRef.current.duration || 0
+            );
+          }
+        });
+      } catch {
+        // En navegadores con soporte parcial de handlers
+      }
+    }
+  }, []);
+
+  // 2. Sincronizar estado de reproducción con la sesión de medios del sistema operativo
+  useEffect(() => {
+    if (typeof window !== "undefined" && "mediaSession" in navigator) {
+      navigator.mediaSession.playbackState = isPlaying ? "playing" : "paused";
+    }
+  }, [isPlaying]);
+
+  // 3. Función para iniciar la reproducción de forma segura
   const startPlayback = useCallback(async () => {
     if (!audioRef.current || userPausedRef.current || hasStartedRef.current) return;
 
@@ -37,22 +99,20 @@ export default function MusicPlayer({
       setIsPlaying(true);
       setShowPrompt(false);
     } catch {
-      // Si las directivas de autoplay del navegador bloquean la reproducción sin gesto previo,
-      // activamos el indicador sutil para invitar a la primera interacción
+      // Si las directivas de autoplay del navegador bloquean la reproducción sin interacción,
+      // mostramos el tooltip para invitar a la primera interacción
       setShowPrompt(true);
     }
   }, []);
 
-  // Autoplay inteligente:
-  // 1. Intento inmediato directo en el montaje.
-  // 2. Si el navegador lo bloquea, se inicia con el primer clic, toque o desplazamiento del usuario.
+  // 4. Autoplay inteligente:
+  // - Intento directo al montar
+  // - Fallback al primer toque, clic o desplazamiento en cualquier parte
   useEffect(() => {
     if (!autoPlay) return;
 
-    // 1. Intento directo inmediato
     startPlayback();
 
-    // 2. Escuchar la primera interacción en cualquier parte de la ventana
     const handleFirstInteraction = () => {
       if (userPausedRef.current || hasStartedRef.current) return;
       startPlayback();
@@ -96,7 +156,7 @@ export default function MusicPlayer({
     }
   };
 
-  // Ocultar globo flotante automáticamente tras 6 segundos para no recargar la pantalla
+  // Ocultar globo flotante automáticamente tras 6 segundos
   useEffect(() => {
     if (showPrompt) {
       const timer = setTimeout(() => {
@@ -144,7 +204,7 @@ export default function MusicPlayer({
         </div>
       )}
 
-      {/* Tarjeta de Spotify (se muestra si no hay archivo local o si el usuario la despliega) */}
+      {/* Tarjeta de Spotify o Detalles (se muestra si no hay archivo local o si el usuario la despliega) */}
       {isExpanded && (
         <div className="mb-3 w-80 max-w-[calc(100vw-3rem)] bg-marfil-50/95 backdrop-blur-lg border border-dorado-antiguo/30 rounded-2xl p-4 shadow-luxury text-verde-bosque transition-all duration-300">
           <div className="flex items-center justify-between pb-2 border-b border-yute-natural/20">
@@ -185,28 +245,44 @@ export default function MusicPlayer({
         </div>
       )}
 
-      {/* Botón flotante estilizado */}
-      <div className="flex items-center bg-verde-bosque/95 backdrop-blur-md border border-dorado-antiguo/40 rounded-full shadow-luxury p-1.5 pl-3 gap-2.5 transition-transform hover:scale-105">
+      {/* Botón flotante estilizado con monograma de Edgar & Camila */}
+      <div className="flex items-center bg-verde-bosque/95 backdrop-blur-md border border-dorado-antiguo/40 rounded-full shadow-luxury p-1.5 pl-2 gap-2.5 transition-transform hover:scale-105">
         <button
           onClick={togglePlay}
           className="flex items-center gap-2.5 text-left text-marfil focus:outline-none cursor-pointer"
           title={isPlaying ? "Pausar música" : "Reproducir música"}
           aria-label={isPlaying ? "Pausar música" : "Reproducir música"}
         >
+          {/* Monograma en miniatura con anillo dorado y estado activo */}
+          <div className="relative flex items-center justify-center shrink-0">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/monograma-ec.jpg"
+              alt="E & C"
+              className="h-8 w-8 rounded-full border border-dorado-antiguo/60 object-cover shadow-sm"
+            />
+            {isPlaying && (
+              <span className="absolute -bottom-0.5 -right-0.5 flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-dorado-antiguo opacity-75" />
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-dorado-antiguo" />
+              </span>
+            )}
+          </div>
+
           {/* Ecualizador animado */}
-          <div className="flex items-end gap-0.5 h-4 w-4">
+          <div className="flex items-end gap-0.5 h-4 w-3.5">
             <span
-              className={`w-1 bg-dorado-antiguo rounded-full transition-all duration-300 ${
+              className={`w-0.5 bg-dorado-antiguo rounded-full transition-all duration-300 ${
                 isPlaying ? "h-4 animate-pulse" : "h-1.5"
               }`}
             />
             <span
-              className={`w-1 bg-dorado-antiguo rounded-full transition-all duration-300 ${
+              className={`w-0.5 bg-dorado-antiguo rounded-full transition-all duration-300 ${
                 isPlaying ? "h-3 animate-pulse delay-75" : "h-2"
               }`}
             />
             <span
-              className={`w-1 bg-dorado-antiguo rounded-full transition-all duration-300 ${
+              className={`w-0.5 bg-dorado-antiguo rounded-full transition-all duration-300 ${
                 isPlaying ? "h-4 animate-pulse delay-150" : "h-1"
               }`}
             />
