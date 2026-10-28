@@ -94,8 +94,8 @@ export default function FlowerDivider({
     (slot
       ? SLOT_DEFAULT_MAP[slot] || (isBottomMode ? "/images/flores/Final.png" : "/images/flores/Separador.png")
       : isBottomMode
-      ? "/images/flores/Final.png"
-      : "/images/flores/Separador.png");
+        ? "/images/flores/Final.png"
+        : "/images/flores/Separador.png");
 
   const isFull = size === "full";
 
@@ -138,20 +138,19 @@ export default function FlowerDivider({
           alt=""
           loading="lazy"
           decoding="async"
-          className={`block select-none drop-shadow-[0_15px_35px_rgba(0,0,0,0.5)] transition-all duration-300 ${
-            isFull
-              ? "w-full min-w-full h-auto max-h-[160px] sm:max-h-[220px] md:max-h-[260px] object-cover object-center"
-              : "w-full h-auto object-contain object-center"
-          } ${maxHeight || ""} ${imageClassName}`}
+          className={`block select-none drop-shadow-[0_15px_35px_rgba(0,0,0,0.5)] transition-all duration-300 ${isFull
+            ? "w-full min-w-full h-auto max-h-[160px] sm:max-h-[220px] md:max-h-[260px] object-cover object-center"
+            : "w-full h-auto object-contain object-center"
+            } ${maxHeight || ""} ${imageClassName}`}
         />
       </div>
     );
   }
 
   // Por defecto: "intersection" / "top" sobrepuesto en la costura entre secciones (0 espacio en el layout)
-  // Altura calibrada responsivamente para que en pantallas de escritorio/computador nunca invada los textos adyacentes
+  // Preserva al 100% la silueta orgánica natural de las flores y hojas con fondo transparente (sin cortes ni recortes con object-cover)
   const imageSizeClasses = isFull
-    ? "w-full min-w-full h-auto max-h-[110px] sm:max-h-[140px] md:max-h-[170px] lg:max-h-[190px] xl:max-h-[210px] object-cover object-center"
+    ? "w-full max-w-[1500px] 2xl:max-w-[1700px] h-auto object-contain object-center"
     : "w-full h-auto object-contain object-center";
 
   return (
@@ -168,5 +167,5 @@ export default function FlowerDivider({
         className={`block select-none drop-shadow-[0_12px_30px_rgba(0,0,0,0.45)] transition-all duration-300 ${imageSizeClasses} ${offsetY} ${maxHeight || ""} ${imageClassName}`}
       />
     </div>
-  );
-}
+  )
+};

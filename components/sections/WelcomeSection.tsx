@@ -18,7 +18,7 @@ export default function WelcomeSection() {
         position="intersection"
       />
 
-      <div className="mx-auto max-w-2xl px-6 pb-20 pt-32 sm:pb-28 sm:pt-40 md:pt-48">
+      <div className="mx-auto max-w-2xl px-6 pb-20 pt-32 sm:pb-28 sm:pt-40 md:pt-48 lg:pt-56">
         <FadeUp>
           <h2
             style={{ fontFamily: "'Great Vibes', 'Great Vibes Local', var(--font-great-vibes), cursive" }}

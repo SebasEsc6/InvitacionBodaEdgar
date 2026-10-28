@@ -85,7 +85,7 @@ export default function RSVPSection({ guest }: RSVPSectionProps) {
         position="intersection"
       />
 
-      <div className="mx-auto max-w-3xl px-6 pb-24 pt-32 text-center sm:pb-32 sm:pt-40 md:pt-44">
+      <div className="mx-auto max-w-3xl px-6 pb-24 pt-32 text-center sm:pb-32 sm:pt-40 md:pt-44 lg:pt-52">
         <SectionHeading title="Confirmación" subtitle="Reserva de honor" />
 
         <FadeUp delay={0.1}>
