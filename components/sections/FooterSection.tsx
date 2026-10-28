@@ -18,7 +18,7 @@ export default function FooterSection() {
   const isInvitePage = pathname.startsWith("/invite");
 
   return (
-    <footer className="section-deep relative text-center text-marfil/80 overflow-hidden pt-16 sm:pt-24 pb-44 sm:pb-56 md:pb-64">
+    <footer className="section-deep relative text-center text-marfil/80 overflow-hidden pt-16 sm:pt-24 pb-48 sm:pb-60 md:pb-72">
       <div className="relative z-20 mx-auto max-w-2xl px-6 pb-6">
         <FadeUp>
           <p

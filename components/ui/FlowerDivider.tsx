@@ -119,7 +119,7 @@ export default function FlowerDivider({
           alt=""
           loading="lazy"
           decoding="async"
-          className={`block select-none w-full min-w-full h-auto max-h-[300px] sm:max-h-[400px] md:max-h-[480px] object-cover object-top translate-y-3 sm:translate-y-6 md:translate-y-8 drop-shadow-[0_-12px_28px_rgba(0,0,0,0.55)] transition-all duration-300 ${offsetY} ${maxHeight || ""} ${imageClassName}`}
+          className={`block select-none w-full min-w-full h-auto max-h-[260px] sm:max-h-[340px] md:max-h-[400px] lg:max-h-[440px] object-cover object-top translate-y-6 sm:translate-y-10 md:translate-y-14 lg:translate-y-16 drop-shadow-[0_-12px_28px_rgba(0,0,0,0.55)] transition-all duration-300 ${offsetY} ${maxHeight || ""} ${imageClassName}`}
         />
       </div>
     );
@@ -140,7 +140,7 @@ export default function FlowerDivider({
           decoding="async"
           className={`block select-none drop-shadow-[0_15px_35px_rgba(0,0,0,0.5)] transition-all duration-300 ${
             isFull
-              ? "w-full min-w-full h-auto max-h-[360px] sm:max-h-[440px] md:max-h-[500px] object-cover object-center"
+              ? "w-full min-w-full h-auto max-h-[160px] sm:max-h-[220px] md:max-h-[260px] object-cover object-center"
               : "w-full h-auto object-contain object-center"
           } ${maxHeight || ""} ${imageClassName}`}
         />
@@ -149,8 +149,9 @@ export default function FlowerDivider({
   }
 
   // Por defecto: "intersection" / "top" sobrepuesto en la costura entre secciones (0 espacio en el layout)
+  // Altura calibrada responsivamente para que en pantallas de escritorio/computador nunca invada los textos adyacentes
   const imageSizeClasses = isFull
-    ? "w-full min-w-full h-auto max-h-[260px] sm:max-h-[340px] md:max-h-[420px] object-cover object-center"
+    ? "w-full min-w-full h-auto max-h-[110px] sm:max-h-[140px] md:max-h-[170px] lg:max-h-[190px] xl:max-h-[210px] object-cover object-center"
     : "w-full h-auto object-contain object-center";
 
   return (
