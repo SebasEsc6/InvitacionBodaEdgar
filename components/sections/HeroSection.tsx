@@ -60,7 +60,7 @@ export default function HeroSection({ guestName, cupos }: HeroSectionProps) {
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-verde-bosque-deep/45 via-verde-bosque-deep/15 to-verde-bosque-deep" />
       <div className="absolute inset-x-0 bottom-0 -z-10 h-3/4 bg-gradient-to-t from-verde-bosque-deep via-verde-bosque-deep/85 to-transparent" />
 
-      <div className="mx-auto flex w-full max-w-4xl flex-col items-center px-6 pb-48 pt-20 text-center sm:pb-60 sm:pt-28 md:pb-72">
+      <div className="mx-auto flex w-full max-w-4xl flex-col items-center px-6 pb-20 pt-20 text-center sm:pb-28 sm:pt-28 md:pb-36 lg:pb-44">
         {/* Nombres principales en la tipografía Great Vibes (cursiva clásica de boda) */}
         <FadeUp delay={0.15}>
           <h1

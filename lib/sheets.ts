@@ -13,6 +13,7 @@ const mockGuests: Map<string, GuestInvitation> = new Map([
       nombre_grupo: "Familia Morales González",
       cupos: 4,
       estado: "Pendiente",
+      mesa: "Mesa 3 — Jardín Central",
     },
   ],
   [
@@ -22,6 +23,7 @@ const mockGuests: Map<string, GuestInvitation> = new Map([
       nombre_grupo: "Sr. Carlos Mendoza & Pareja",
       cupos: 2,
       estado: "Pendiente",
+      mesa: "Mesa 1 — Salón Principal",
     },
   ],
   [
@@ -31,10 +33,9 @@ const mockGuests: Map<string, GuestInvitation> = new Map([
       nombre_grupo: "Dra. Sofía Valencia",
       cupos: 1,
       estado: "Confirmado",
+      mesa: "Mesa 2 — Terraza",
       fecha_confirmacion: "2026-10-20 14:30:00",
       asistentes_confirmados: 1,
-      restricciones_alimentarias: "Vegetariana",
-      mensaje_novios: "¡Qué emoción verlos dar este paso! Nos vemos pronto.",
     },
   ],
   [
@@ -46,7 +47,16 @@ const mockGuests: Map<string, GuestInvitation> = new Map([
       estado: "Cancelado",
       fecha_confirmacion: "2026-10-18 10:15:00",
       asistentes_confirmados: 0,
-      mensaje_novios: "Estaré fuera del país en esa fecha, pero les mando un abrazo enorme.",
+    },
+  ],
+  [
+    "familia-ramirez",
+    {
+      id_invitacion: "familia-ramirez",
+      nombre_grupo: "Familia Ramírez Duque",
+      cupos: 3,
+      estado: "Pendiente",
+      mesa: "Mesa 4 — Salón Imperial",
     },
   ],
 ]);
@@ -63,20 +73,41 @@ function getGoogleAuth() {
   // Handle newlines in private key string whether passed in double quotes or escaped
   privateKey = privateKey.replace(/\\n/g, "\n");
 
+  // Tolerancia de 5 minutos ante desfase de reloj local de la máquina
+  const now = Math.floor(Date.now() / 1000) - 300;
+
   const auth = new google.auth.JWT({
     email: clientEmail,
     key: privateKey,
     scopes: ["https://www.googleapis.com/auth/spreadsheets"],
+    additionalClaims: {
+      iat: now,
+      exp: now + 3600,
+    },
   });
 
   return { auth, sheetId };
 }
 
 /**
+ * Normaliza una cadena removiendo tildes y caracteres especiales para búsquedas tolerantes
+ */
+export function normalizeSearchString(text: string): string {
+  return text
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
+
+/**
  * Normaliza el identificador para búsquedas tolerantes a mayúsculas/espacios
  */
 function normalizeId(id: string): string {
-  return id.trim().toLowerCase();
+  return id
+    .trim()
+    .toLowerCase()
+    .replace(/^[`'"]+|[`'"]+$/g, "");
 }
 
 /**
@@ -87,9 +118,6 @@ export async function getGuestById(id: string): Promise<GuestInvitation | null> 
   const googleConfig = getGoogleAuth();
 
   if (!googleConfig) {
-    console.warn(
-      "[Sheets] Variables de entorno de Google Sheets no encontradas. Utilizando almacenamiento demo en memoria."
-    );
     const guest = mockGuests.get(normalizedId);
     return guest ? { ...guest } : null;
   }
@@ -98,10 +126,10 @@ export async function getGuestById(id: string): Promise<GuestInvitation | null> 
     const { auth, sheetId } = googleConfig;
     const sheets = google.sheets({ version: "v4", auth });
 
-    // Asumimos que la hoja se llama "Invitados" o leemos la primera hoja
+    // Rango A2:J para cubrir todas las columnas de la hoja Invitados
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId: sheetId,
-      range: "Invitados!A2:H",
+      range: "Invitados!A2:J",
     });
 
     const rows = response.data.values;
@@ -115,9 +143,10 @@ export async function getGuestById(id: string): Promise<GuestInvitation | null> 
     // C: cupos
     // D: estado (Pendiente, Confirmado, Cancelado)
     // E: fecha_confirmacion
-    // F: asistentes_confirmados
-    // G: restricciones_alimentarias
-    // H: mensaje_novios
+    // F: mesa
+    // G: asistentes_confirmados
+    // H: restricciones_alimentarias
+    // I: mensaje_novios
     const row = rows.find((r) => r[0] && normalizeId(String(r[0])) === normalizedId);
 
     if (!row) {
@@ -125,20 +154,102 @@ export async function getGuestById(id: string): Promise<GuestInvitation | null> 
     }
 
     return {
-      id_invitacion: String(row[0]).trim(),
+      id_invitacion: normalizeId(String(row[0])),
       nombre_grupo: String(row[1] || "Estimado(a) Invitado(a)").trim(),
       cupos: Number(row[2]) || 1,
       estado: (row[3] as GuestStatus) || "Pendiente",
       fecha_confirmacion: row[4] ? String(row[4]) : undefined,
-      asistentes_confirmados: row[5] ? Number(row[5]) : undefined,
-      restricciones_alimentarias: row[6] ? String(row[6]) : undefined,
-      mensaje_novios: row[7] ? String(row[7]) : undefined,
+      mesa: row[5] ? String(row[5]).trim() : undefined,
+      asistentes_confirmados: row[6] ? Number(row[6]) : undefined,
+      restricciones_alimentarias: row[7] ? String(row[7]) : undefined,
+      mensaje_novios: row[8] ? String(row[8]) : undefined,
     };
   } catch (error) {
     console.error("[Sheets] Error al consultar Google Sheets:", error);
     // Fallback a mock data si hay error de red o permisos
     const guest = mockGuests.get(normalizedId);
     return guest ? { ...guest } : null;
+  }
+}
+
+/**
+ * Busca invitados por nombre, apellido o código de invitación (para el buscador de la landing)
+ */
+export async function searchGuests(query: string): Promise<GuestInvitation[]> {
+  const trimmed = query.trim();
+  if (!trimmed || trimmed.length < 2) {
+    return [];
+  }
+
+  const cleanQuery = normalizeSearchString(trimmed);
+  const googleConfig = getGoogleAuth();
+
+  if (!googleConfig) {
+    const results: GuestInvitation[] = [];
+    for (const guest of mockGuests.values()) {
+      const matchName = normalizeSearchString(guest.nombre_grupo).includes(cleanQuery);
+      const matchId = normalizeSearchString(guest.id_invitacion).includes(cleanQuery);
+      if (matchName || matchId) {
+        results.push({ ...guest });
+      }
+    }
+    return results.slice(0, 8);
+  }
+
+  try {
+    const { auth, sheetId } = googleConfig;
+    const sheets = google.sheets({ version: "v4", auth });
+
+    const response = await sheets.spreadsheets.values.get({
+      spreadsheetId: sheetId,
+      range: "Invitados!A2:J",
+    });
+
+    const rows = response.data.values;
+    if (!rows || rows.length === 0) {
+      return [];
+    }
+
+    const matchedGuests: GuestInvitation[] = [];
+
+    for (const row of rows) {
+      if (!row[0]) continue;
+      const id = normalizeId(String(row[0]));
+      const name = String(row[1] || "").trim();
+
+      const matchName = normalizeSearchString(name).includes(cleanQuery);
+      const matchId = normalizeSearchString(id).includes(cleanQuery);
+
+      if (matchName || matchId) {
+        matchedGuests.push({
+          id_invitacion: id,
+          nombre_grupo: name || "Invitado",
+          cupos: Number(row[2]) || 1,
+          estado: (row[3] as GuestStatus) || "Pendiente",
+          fecha_confirmacion: row[4] ? String(row[4]) : undefined,
+          mesa: row[5] ? String(row[5]).trim() : undefined,
+          asistentes_confirmados: row[6] ? Number(row[6]) : undefined,
+          restricciones_alimentarias: row[7] ? String(row[7]) : undefined,
+          mensaje_novios: row[8] ? String(row[8]) : undefined,
+        });
+      }
+
+      if (matchedGuests.length >= 8) break;
+    }
+
+    return matchedGuests;
+  } catch (error) {
+    console.error("[Sheets] Error al buscar invitados en Google Sheets:", error);
+    // Fallback con mock data
+    const results: GuestInvitation[] = [];
+    for (const guest of mockGuests.values()) {
+      const matchName = normalizeSearchString(guest.nombre_grupo).includes(cleanQuery);
+      const matchId = normalizeSearchString(guest.id_invitacion).includes(cleanQuery);
+      if (matchName || matchId) {
+        results.push({ ...guest });
+      }
+    }
+    return results.slice(0, 8);
   }
 }
 
@@ -161,7 +272,7 @@ export async function updateGuestRSVP(
         ...existing,
         estado: data.estado,
         fecha_confirmacion: now,
-        asistentes_confirmados: data.asistentes_confirmados,
+        asistentes_confirmados: data.asistentes_confirmados ?? (data.estado === "Confirmado" ? existing.cupos : 0),
         restricciones_alimentarias: data.restricciones_alimentarias || "",
         mensaje_novios: data.mensaje_novios || "",
       });
@@ -194,21 +305,13 @@ export async function updateGuestRSVP(
     // Google Sheets index: Header es fila 1, A2 es index 0 en nuestro array, por ende fila real = rowIndex + 2
     const targetRow = rowIndex + 2;
 
-    // Actualizamos columnas D a H: estado, fecha_confirmacion, asistentes_confirmados, restricciones, mensaje
+    // Actualizamos columnas D y E (estado, fecha_confirmacion) sin alterar la columna F (mesa)
     await sheets.spreadsheets.values.update({
       spreadsheetId: sheetId,
-      range: `Invitados!D${targetRow}:H${targetRow}`,
+      range: `Invitados!D${targetRow}:E${targetRow}`,
       valueInputOption: "USER_ENTERED",
       requestBody: {
-        values: [
-          [
-            data.estado,
-            now,
-            data.asistentes_confirmados,
-            data.restricciones_alimentarias || "Ninguna",
-            data.mensaje_novios || "",
-          ],
-        ],
+        values: [[data.estado, now]],
       },
     });
 

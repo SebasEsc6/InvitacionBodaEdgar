@@ -42,30 +42,47 @@ const events: TimelineEvent[] = [
 
 export default function TimelineSection() {
   return (
-    <section id="cronograma" className="bg-paper-beige relative z-10 px-8 py-24 sm:py-32">
+    <section id="cronograma" className="bg-paper-beige relative z-10 overflow-hidden px-4 py-20 sm:px-8 sm:py-28">
       <TornEdge position="top" seed={7} />
       <TornEdge position="bottom" seed={23} />
 
-      {/* Flores laterales de Gemini */}
-      <FlowerAccent side="left" className="top-16 hidden sm:block" />
-      <FlowerAccent side="right" className="bottom-24 hidden sm:block" />
+      {/*
+        Flores laterales inspiradas en la referencia:
+        - Izquierda: asoma junto a los primeros eventos (Recepción / Ceremonia)
+        - Derecha: asoma junto a los eventos intermedios (Cóctel / Cena)
+        - offset="balanced": garantiza que solo entren las hojas hacia los márgenes sin tocar el texto
+      */}
+      <FlowerAccent
+        side="left"
+        src="/images/flores/LateralIzq.png"
+        size="lg"
+        offset="balanced"
+        className="top-40 sm:top-48 md:top-56"
+      />
+      <FlowerAccent
+        side="right"
+        src="/images/flores/LateralDer.png"
+        size="lg"
+        offset="balanced"
+        className="top-[55%] sm:top-[58%]"
+      />
 
-      <div className="relative z-10 mx-auto max-w-2xl">
+      <div className="relative z-10 mx-auto max-w-lg px-6 sm:px-10">
         <SectionHeading
           title="Cronograma"
           subtitle="Programa del gran día"
           tone="onLight"
-          className="mb-14"
+          className="mb-12 sm:mb-14"
         />
 
-        <ol className="space-y-12 text-center">
+        <ol className="space-y-10 sm:space-y-12 text-center">
           {events.map((item, index) => (
             <li key={item.time}>
               <FadeUp delay={index * 0.05}>
                 <p className="font-serif text-3xl sm:text-4xl md:text-5xl font-light leading-none tracking-[-0.02em] text-verde-bosque">
                   {item.time}
                 </p>
-                <h3 className="mt-2.5 font-serif text-xl sm:text-2xl font-normal text-verde-bosque">
+                <h3 className="mt-2 font-serif text-xl sm:text-2xl font-normal text-verde-bosque">
                   {item.title}
                 </h3>
                 <p className="mx-auto mt-1.5 max-w-xs font-sans text-xs leading-relaxed text-madera-nogal sm:max-w-sm sm:text-sm font-light">

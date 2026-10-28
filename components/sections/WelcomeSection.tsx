@@ -6,12 +6,21 @@ export default function WelcomeSection() {
   return (
     <section
       id="bienvenida"
-      className="section-dark relative px-6 pb-28 pt-36 text-center text-marfil sm:pb-36 sm:pt-48 md:pt-56"
+      className="section-dark relative text-center text-marfil overflow-hidden"
     >
-      {/* Flores fotorrealistas de Gemini separando portada de bienvenida */}
-      <FlowerDivider slot="01-portada-bienvenida" edge="top" />
+      {/*
+        Separador floral superior inmersivo de borde a borde:
+        - Para cambiar la imagen: edita la propiedad 'src' (ej: "/images/flores/Separador.png")
+        - Para cambiar el tamaño: cambia 'size' ("full", "lg", "md", "sm") o añade maxHeight/className
+      */}
+      <FlowerDivider
+        src="/images/flores/Separador.png"
+        size="full"
+        position="top"
+        className="pt-3 sm:pt-5 pb-2"
+      />
 
-      <div className="mx-auto max-w-2xl">
+      <div className="mx-auto max-w-2xl px-6 pb-20 pt-2 sm:pb-28 sm:pt-4">
         <FadeUp>
           <h2
             style={{ fontFamily: "'Great Vibes', 'Great Vibes Local', var(--font-great-vibes), cursive" }}

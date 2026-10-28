@@ -5,6 +5,7 @@ export interface GuestInvitation {
   nombre_grupo: string;
   cupos: number;
   estado: GuestStatus;
+  mesa?: string;
   fecha_confirmacion?: string;
   asistentes_confirmados?: number;
   restricciones_alimentarias?: string;
@@ -14,7 +15,7 @@ export interface GuestInvitation {
 export interface RSVPFormData {
   id_invitacion: string;
   estado: "Confirmado" | "Cancelado";
-  asistentes_confirmados: number;
+  asistentes_confirmados?: number;
   restricciones_alimentarias?: string;
   mensaje_novios?: string;
 }

@@ -11,6 +11,10 @@ import RSVPSection from "@/components/sections/RSVPSection";
 import MusicPlayer from "@/components/audio/MusicPlayer";
 import FooterSection from "@/components/sections/FooterSection";
 
+export const instant = false;
+
+import { connection } from "next/server";
+
 interface InvitePageProps {
   params: Promise<{
     id: string;
@@ -18,6 +22,7 @@ interface InvitePageProps {
 }
 
 export async function generateMetadata({ params }: InvitePageProps) {
+  await connection();
   const { id } = await params;
   const guest = await getGuestById(id);
 
@@ -35,6 +40,7 @@ export async function generateMetadata({ params }: InvitePageProps) {
 }
 
 export default async function InvitePage({ params }: InvitePageProps) {
+  await connection();
   const { id } = await params;
   const guest = await getGuestById(id);
 

@@ -18,14 +18,29 @@ export default function GiftSection() {
   };
 
   return (
-    <section id="regalo" className="bg-paper-beige relative z-10 px-8 pt-24 pb-44 sm:pt-32 sm:pb-56 md:pb-64">
+    <section id="regalo" className="bg-paper-beige relative z-10 overflow-hidden px-4 py-20 sm:px-8 sm:py-28">
       <TornEdge position="top" seed={41} />
       <TornEdge position="bottom" seed={59} />
 
-      <FlowerAccent side="left" className="top-16 hidden sm:block" />
-      <FlowerAccent side="right" className="bottom-32 hidden sm:block" />
+      {/*
+        Flores laterales sutiles que abrazan los márgenes sin competir con la información
+      */}
+      <FlowerAccent
+        side="left"
+        src="/images/flores/LateralIzq.png"
+        size="md"
+        offset="subtle"
+        className="top-24 sm:top-28"
+      />
+      <FlowerAccent
+        side="right"
+        src="/images/flores/LateralDer.png"
+        size="md"
+        offset="subtle"
+        className="bottom-20 sm:bottom-28"
+      />
 
-      <div className="relative z-10 mx-auto max-w-2xl text-center">
+      <div className="relative z-10 mx-auto max-w-xl px-6 sm:px-10 text-center">
         <SectionHeading title="Detalles" subtitle="Lluvia de sobres" tone="onLight" />
 
         <FadeUp delay={0.1}>

@@ -2,11 +2,11 @@
 
 import React, { useState, useTransition } from "react";
 import confetti from "canvas-confetti";
-import { CheckCircle2, XCircle, Send, Heart, AlertCircle, Clock, Users, MessageSquare } from "lucide-react";
+import { CheckCircle2, XCircle, Heart, Users, Sparkles, Loader2, UtensilsCrossed } from "lucide-react";
 import FadeUp from "../animations/FadeUp";
 import SectionHeading from "../ui/SectionHeading";
 import FlowerDivider from "../ui/FlowerDivider";
-import { GuestInvitation, RSVPFormData, GuestStatus } from "@/lib/types";
+import { GuestInvitation } from "@/lib/types";
 import { submitRSVP } from "@/app/actions/rsvp";
 
 interface RSVPSectionProps {
@@ -16,67 +16,78 @@ interface RSVPSectionProps {
 export default function RSVPSection({ guest }: RSVPSectionProps) {
   const [isPending, startTransition] = useTransition();
   const [currentGuest, setCurrentGuest] = useState<GuestInvitation>(guest);
-  const [estadoSeleccionado, setEstadoSeleccionado] = useState<"Confirmado" | "Cancelado">("Confirmado");
-  const [asistentes, setAsistentes] = useState<number>(guest.cupos || 1);
-  const [restricciones, setRestricciones] = useState<string>("");
-  const [mensaje, setMensaje] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const isAlreadyAnswered = currentGuest.estado === "Confirmado" || currentGuest.estado === "Cancelado";
+  const isAnswered = currentGuest.estado === "Confirmado" || currentGuest.estado === "Cancelado";
 
   const triggerConfetti = () => {
     try {
       confetti({
-        particleCount: 90,
-        spread: 70,
+        particleCount: 100,
+        spread: 80,
         origin: { y: 0.6 },
         colors: ["#B79A53", "#777D62", "#263D30", "#C4A77D", "#F4F0E6"],
       });
-    } catch (e) {
+    } catch {
       // safe fallback
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleConfirm = () => {
     setErrorMessage(null);
-
-    const payload: RSVPFormData = {
-      id_invitacion: currentGuest.id_invitacion,
-      estado: estadoSeleccionado,
-      asistentes_confirmados: estadoSeleccionado === "Confirmado" ? asistentes : 0,
-      restricciones_alimentarias: restricciones,
-      mensaje_novios: mensaje,
-    };
-
     startTransition(async () => {
-      const response = await submitRSVP(payload);
+      const response = await submitRSVP({
+        id_invitacion: currentGuest.id_invitacion,
+        estado: "Confirmado",
+        asistentes_confirmados: currentGuest.cupos,
+      });
 
       if (response.success) {
         setCurrentGuest((prev) => ({
           ...prev,
-          estado: estadoSeleccionado,
-          asistentes_confirmados: payload.asistentes_confirmados,
-          restricciones_alimentarias: payload.restricciones_alimentarias,
-          mensaje_novios: payload.mensaje_novios,
+          estado: "Confirmado",
+          asistentes_confirmados: prev.cupos,
         }));
-
-        if (estadoSeleccionado === "Confirmado") {
-          triggerConfetti();
-        }
+        triggerConfetti();
       } else {
-        setErrorMessage(response.error || "No pudimos guardar tu respuesta. Intenta nuevamente.");
+        setErrorMessage(response.error || "No pudimos guardar tu confirmación. Intenta nuevamente.");
+      }
+    });
+  };
+
+  const handleDecline = () => {
+    setErrorMessage(null);
+    startTransition(async () => {
+      const response = await submitRSVP({
+        id_invitacion: currentGuest.id_invitacion,
+        estado: "Cancelado",
+        asistentes_confirmados: 0,
+      });
+
+      if (response.success) {
+        setCurrentGuest((prev) => ({
+          ...prev,
+          estado: "Cancelado",
+          asistentes_confirmados: 0,
+        }));
+      } else {
+        setErrorMessage(response.error || "No fue posible procesar tu solicitud. Intenta nuevamente.");
       }
     });
   };
 
   return (
-    <section id="rsvp" className="section-dark-alt relative px-4 pb-52 pt-44 text-marfil sm:px-6 sm:pb-72 sm:pt-60">
-      {/* Flores que separan "Detalles" de la confirmación */}
-      <FlowerDivider slot="02-detalles-rsvp" edge="top" />
+    <section id="rsvp" className="section-dark-alt relative text-marfil overflow-hidden">
+      {/* Separador floral que corona el inicio de la sección */}
+      <FlowerDivider
+        src="/images/flores/Separador.png"
+        size="full"
+        position="top"
+        className="pt-4 sm:pt-6 pb-2 sm:pb-3"
+      />
 
-      <div className="max-w-3xl mx-auto text-center">
-        <SectionHeading title="Confirmación" subtitle="Confirma tu asistencia" />
+      <div className="mx-auto max-w-3xl px-6 pb-24 pt-3 text-center sm:pb-32 sm:pt-4">
+        <SectionHeading title="Confirmación" subtitle="Reserva de honor" />
 
         <FadeUp delay={0.1}>
           <p className="mt-6 font-serif text-3xl sm:text-4xl md:text-5xl font-light tracking-[-0.01em] text-marfil">
@@ -86,80 +97,95 @@ export default function RSVPSection({ guest }: RSVPSectionProps) {
             4:00 PM
           </p>
           <p className="mx-auto mt-4 max-w-md font-sans text-xs sm:text-sm leading-relaxed text-marfil/75 font-light">
-            Por favor, confirma tu presencia completando los siguientes datos.
+            Nos llena de ilusión compartir este paso trascendental con las personas que más amamos.
           </p>
-          <p className="mt-2 font-sans text-xs text-dorado-antiguo-light/80 font-light mb-8">
-            Confirmar antes del 13 de noviembre de 2026
+          <p className="mt-2 font-sans text-xs text-dorado-antiguo-light/85 font-light mb-8">
+            Agradecemos confirmar tu asistencia antes del 13 de noviembre de 2026
           </p>
         </FadeUp>
 
-        {/* State 1: Ya Respondido (Confirmado o Cancelado) */}
-        {isAlreadyAnswered ? (
-          <FadeUp delay={0.3}>
-            <div className="bg-marfil-50 text-verde-bosque border-2 border-dorado-antiguo/40 rounded-3xl p-8 sm:p-12 shadow-luxury text-center max-w-2xl mx-auto">
+        {errorMessage && (
+          <FadeUp>
+            <div className="mx-auto mb-6 max-w-md rounded-2xl border border-red-300/40 bg-red-950/60 p-4 text-xs font-sans text-red-200">
+              {errorMessage}
+            </div>
+          </FadeUp>
+        )}
+
+        {/* Estado 1: Ya Respondido (Confirmado o Cancelado) */}
+        {isAnswered ? (
+          <FadeUp delay={0.25}>
+            <div className="mx-auto max-w-2xl rounded-3xl border-2 border-dorado-antiguo/40 bg-marfil-50 p-8 text-center text-verde-bosque shadow-luxury sm:p-12">
               <div
-                className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 shadow-md ${
+                className={`mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full shadow-md ${
                   currentGuest.estado === "Confirmado"
-                    ? "bg-emerald-100 text-emerald-800 border border-emerald-300"
-                    : "bg-stone-200 text-stone-700 border border-stone-300"
+                    ? "border border-emerald-300 bg-emerald-100 text-emerald-800"
+                    : "border border-stone-300 bg-stone-200 text-stone-700"
                 }`}
               >
                 {currentGuest.estado === "Confirmado" ? (
-                  <CheckCircle2 className="w-9 h-9 text-emerald-700" />
+                  <CheckCircle2 className="h-9 w-9 text-emerald-700" />
                 ) : (
-                  <XCircle className="w-9 h-9 text-stone-600" />
+                  <XCircle className="h-9 w-9 text-stone-600" />
                 )}
               </div>
 
-              <h3 className="font-serif text-3xl sm:text-4xl text-verde-bosque font-medium mb-3">
+              <h3 className="font-serif text-3xl font-medium text-verde-bosque sm:text-4xl">
                 {currentGuest.estado === "Confirmado"
                   ? "¡Gracias por Confirmar tu Asistencia!"
                   : "Agradecemos tu Respuesta"}
               </h3>
 
-              <div className="my-4 px-4 py-2 rounded-xl bg-white/70 border border-yute-natural/30 inline-block text-xs font-sans text-madera-nogal">
-                Invitación registrada a nombre de:{" "}
-                <strong className="text-verde-bosque">{currentGuest.nombre_grupo}</strong>
+              <div className="my-4 inline-block rounded-xl border border-yute-natural/30 bg-white/80 px-5 py-2 font-sans text-xs text-madera-nogal shadow-xs">
+                Invitación a nombre de:{" "}
+                <strong className="text-verde-bosque font-medium">{currentGuest.nombre_grupo}</strong>
               </div>
 
-              <p className="font-sans text-sm sm:text-base text-madera-nogal max-w-lg mx-auto mb-6 leading-relaxed">
+              <p className="mx-auto mb-6 max-w-lg font-sans text-sm leading-relaxed text-madera-nogal sm:text-base">
                 {currentGuest.estado === "Confirmado" ? (
                   <>
-                    Nos llena de felicidad saber que nos acompañarás el 5 de diciembre. Hemos reservado{" "}
-                    <strong className="text-verde-bosque">
+                    Nos alegra infinitamente saber que nos acompañarás el 5 de diciembre. Hemos reservado{" "}
+                    <strong className="text-verde-bosque font-semibold">
                       {currentGuest.asistentes_confirmados || currentGuest.cupos}{" "}
-                      {(currentGuest.asistentes_confirmados || currentGuest.cupos) === 1
-                        ? "lugar"
-                        : "lugares"}
+                      {(currentGuest.asistentes_confirmados || currentGuest.cupos) === 1 ? "lugar" : "lugares"}
                     </strong>{" "}
-                    para ti y tus acompañantes.
+                    con todo nuestro cariño.
                   </>
                 ) : (
                   <>
-                    Lamentamos mucho que no puedas acompañarnos físicamente, pero sabemos que tu corazón y buenos deseos estarán con nosotros en este gran día.
+                    Lamentamos que no puedas estar presente físicamente, pero sabemos que tu cariño y bendiciones nos
+                    acompañarán en este nuevo comienzo.
                   </>
                 )}
               </p>
 
-              {currentGuest.mensaje_novios && (
-                <div className="mt-4 p-4 rounded-2xl bg-verde-salvia/10 border border-verde-salvia/25 text-left max-w-md mx-auto">
-                  <p className="text-[10px] uppercase tracking-wider text-verde-salvia font-semibold mb-1">
-                    Tu Mensaje para los Novios:
+              {/* Información de mesa si está confirmada y asignada */}
+              {currentGuest.estado === "Confirmado" && (
+                <div className="mx-auto mt-6 max-w-md rounded-2xl border border-dorado-antiguo/30 bg-marfil p-4 text-center">
+                  <div className="flex items-center justify-center gap-2 text-dorado-antiguo-dark">
+                    <UtensilsCrossed className="h-4 w-4" />
+                    <span className="font-sans text-[11px] uppercase tracking-widest font-semibold">
+                      Ubicación de Mesa
+                    </span>
+                  </div>
+                  <p className="mt-1 font-serif text-lg font-medium text-verde-bosque sm:text-xl">
+                    {currentGuest.mesa || "En proceso de asignación"}
                   </p>
-                  <p className="font-serif italic text-sm text-verde-bosque">
-                    &ldquo;{currentGuest.mensaje_novios}&rdquo;
+                  <p className="mt-1 font-sans text-[11px] text-madera-nogal/70">
+                    {currentGuest.mesa
+                      ? "Tu lugar te estará esperando al inicio de la recepción."
+                      : "Te indicaremos tu mesa asignada más cerca de la fecha."}
                   </p>
                 </div>
               )}
 
-              <div className="mt-8 pt-6 border-t border-yute-natural/20 flex flex-col sm:flex-row items-center justify-center gap-3">
+              {/* Botón para rectificar o modificar */}
+              <div className="mt-8 border-t border-yute-natural/20 pt-6">
                 <button
                   type="button"
-                  onClick={() => {
-                    // Permitir modificar respuesta si fue un error
-                    setCurrentGuest((prev) => ({ ...prev, estado: "Pendiente" }));
-                  }}
-                  className="text-xs font-sans text-verde-salvia hover:text-verde-bosque underline underline-offset-4 transition-colors"
+                  disabled={isPending}
+                  onClick={() => setCurrentGuest((prev) => ({ ...prev, estado: "Pendiente" }))}
+                  className="font-sans text-xs text-verde-salvia underline underline-offset-4 transition-colors hover:text-verde-bosque disabled:opacity-50"
                 >
                   ¿Deseas modificar tu respuesta? Haz clic aquí
                 </button>
@@ -167,196 +193,75 @@ export default function RSVPSection({ guest }: RSVPSectionProps) {
             </div>
           </FadeUp>
         ) : (
-          /* State 2: Pendiente -> Formulario Interactivo */
-          <FadeUp delay={0.3}>
-            <div className="bg-marfil-50 text-verde-bosque border border-dorado-antiguo/30 rounded-3xl p-6 sm:p-10 shadow-luxury max-w-2xl mx-auto text-left">
-              {/* Guest Banner */}
-              <div className="mb-8 p-4 rounded-2xl bg-verde-salvia/10 border border-verde-salvia/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-                <div>
-                  <span className="text-[10px] uppercase font-sans tracking-widest text-verde-salvia font-semibold">
-                    Invitación Personalizada
-                  </span>
-                  <h3 className="font-serif text-xl sm:text-2xl text-verde-bosque font-medium">
-                    {currentGuest.nombre_grupo}
-                  </h3>
-                </div>
-                <div className="px-3.5 py-1.5 rounded-full bg-marfil border border-dorado-antiguo/40 text-xs font-sans text-verde-bosque font-medium flex items-center gap-1.5">
-                  <Users className="w-3.5 h-3.5 text-dorado-antiguo" />
-                  <span>
-                    {currentGuest.cupos} {currentGuest.cupos === 1 ? "cupo disponible" : "cupos disponibles"}
+          /* Estado 2: Pendiente -> Botón Directo de Confirmación */
+          <FadeUp delay={0.25}>
+            <div className="mx-auto max-w-xl rounded-3xl border border-dorado-antiguo/35 bg-marfil-50 p-6 text-center text-verde-bosque shadow-luxury sm:p-10">
+              {/* Encabezado del Invitado */}
+              <div className="mb-6 rounded-2xl border border-verde-salvia/25 bg-verde-salvia/10 p-5">
+                <span className="font-sans text-[11px] uppercase tracking-widest font-semibold text-verde-salvia-dark">
+                  Invitación de Honor
+                </span>
+                <h3 className="mt-1 font-serif text-2xl font-medium text-verde-bosque sm:text-3xl">
+                  {currentGuest.nombre_grupo}
+                </h3>
+                <div className="mt-3 flex items-center justify-center">
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-dorado-antiguo/40 bg-marfil px-4 py-1.5 font-sans text-xs font-medium text-verde-bosque shadow-xs">
+                    <Users className="h-3.5 w-3.5 text-dorado-antiguo" />
+                    <span>
+                      {currentGuest.cupos} {currentGuest.cupos === 1 ? "cupo disponible" : "cupos disponibles"}
+                    </span>
                   </span>
                 </div>
               </div>
 
-              {errorMessage && (
-                <div className="mb-6 p-4 rounded-xl bg-red-50 border border-red-200 text-red-800 text-xs font-sans flex items-center gap-2">
-                  <AlertCircle className="w-4 h-4 text-red-600 shrink-0" />
-                  <span>{errorMessage}</span>
-                </div>
-              )}
+              <p className="mx-auto mb-8 max-w-md font-sans text-xs sm:text-sm leading-relaxed text-madera-nogal font-light">
+                Para nosotros es muy importante contar con tu presencia. Por favor confírmanos haciendo clic en el
+                botón a continuación:
+              </p>
 
-              <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Decision Radio Buttons */}
+              {/* Botón Principal: Confirmar Asistencia Directo */}
+              <div className="space-y-4">
+                <button
+                  type="button"
+                  disabled={isPending}
+                  onClick={handleConfirm}
+                  className="group relative flex w-full items-center justify-center gap-3 overflow-hidden rounded-full border border-dorado-antiguo/60 bg-gradient-to-r from-emerald-800 via-verde-bosque to-emerald-900 px-8 py-4.5 font-sans text-sm font-medium uppercase tracking-wider text-marfil shadow-luxury transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-70"
+                >
+                  <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/15 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+                  {isPending ? (
+                    <>
+                      <Loader2 className="h-5 w-5 animate-spin text-dorado-antiguo-light" />
+                      <span>Guardando tu confirmación...</span>
+                    </>
+                  ) : (
+                    <>
+                      <CheckCircle2 className="h-5 w-5 text-dorado-antiguo-light transition-transform group-hover:scale-110" />
+                      <span>Confirmar mi Asistencia</span>
+                      <Sparkles className="h-4 w-4 text-dorado-antiguo-light opacity-80" />
+                    </>
+                  )}
+                </button>
+
+                {/* Opción secundaria para declinar cortésmente */}
                 <div>
-                  <label className="block text-xs font-sans uppercase tracking-wider text-verde-bosque font-semibold mb-3">
-                    ¿Asistirás a la boda? *
-                  </label>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <label
-                      className={`relative flex items-center gap-3 p-4 rounded-2xl border cursor-pointer transition-all ${
-                        estadoSeleccionado === "Confirmado"
-                          ? "bg-verde-bosque text-marfil border-verde-bosque shadow-md"
-                          : "bg-white/80 text-verde-bosque border-yute-natural/30 hover:border-dorado-antiguo"
-                      }`}
-                    >
-                      <input
-                        type="radio"
-                        name="asistencia"
-                        value="Confirmado"
-                        checked={estadoSeleccionado === "Confirmado"}
-                        onChange={() => setEstadoSeleccionado("Confirmado")}
-                        className="sr-only"
-                      />
-                      <CheckCircle2
-                        className={`w-5 h-5 shrink-0 ${
-                          estadoSeleccionado === "Confirmado" ? "text-dorado-antiguo" : "text-verde-salvia"
-                        }`}
-                      />
-                      <div className="flex flex-col">
-                        <span className="font-serif text-lg font-medium leading-tight">
-                          Sí, asistiré
-                        </span>
-                        <span
-                          className={`text-xs ${
-                            estadoSeleccionado === "Confirmado" ? "text-marfil/80" : "text-madera-nogal"
-                          }`}
-                        >
-                          ¡Con alegría y emoción!
-                        </span>
-                      </div>
-                    </label>
-
-                    <label
-                      className={`relative flex items-center gap-3 p-4 rounded-2xl border cursor-pointer transition-all ${
-                        estadoSeleccionado === "Cancelado"
-                          ? "bg-madera-nogal text-marfil border-madera-nogal shadow-md"
-                          : "bg-white/80 text-verde-bosque border-yute-natural/30 hover:border-dorado-antiguo"
-                      }`}
-                    >
-                      <input
-                        type="radio"
-                        name="asistencia"
-                        value="Cancelado"
-                        checked={estadoSeleccionado === "Cancelado"}
-                        onChange={() => setEstadoSeleccionado("Cancelado")}
-                        className="sr-only"
-                      />
-                      <XCircle
-                        className={`w-5 h-5 shrink-0 ${
-                          estadoSeleccionado === "Cancelado" ? "text-dorado-antiguo" : "text-madera-nogal/70"
-                        }`}
-                      />
-                      <div className="flex flex-col">
-                        <span className="font-serif text-lg font-medium leading-tight">
-                          No podré asistir
-                        </span>
-                        <span
-                          className={`text-xs ${
-                            estadoSeleccionado === "Cancelado" ? "text-marfil/80" : "text-madera-nogal"
-                          }`}
-                        >
-                          Acompaño de corazón
-                        </span>
-                      </div>
-                    </label>
-                  </div>
-                </div>
-
-                {/* Cupos selector (only if Confirmado) */}
-                {estadoSeleccionado === "Confirmado" && (
-                  <div>
-                    <label
-                      htmlFor="asistentes"
-                      className="block text-xs font-sans uppercase tracking-wider text-verde-bosque font-semibold mb-2"
-                    >
-                      Número de personas que asistirán *
-                    </label>
-                    <select
-                      id="asistentes"
-                      value={asistentes}
-                      onChange={(e) => setAsistentes(Number(e.target.value))}
-                      className="w-full px-4 py-3 rounded-xl border border-yute-natural/40 bg-white/90 text-verde-bosque font-sans text-sm focus:outline-none focus:border-dorado-antiguo transition-colors"
-                      required
-                    >
-                      {Array.from({ length: currentGuest.cupos }, (_, i) => i + 1).map((num) => (
-                        <option key={num} value={num}>
-                          {num} {num === 1 ? "persona" : "personas"}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                )}
-
-                {/* Dietary restrictions (only if Confirmado) */}
-                {estadoSeleccionado === "Confirmado" && (
-                  <div>
-                    <label
-                      htmlFor="restricciones"
-                      className="block text-xs font-sans uppercase tracking-wider text-verde-bosque font-semibold mb-2"
-                    >
-                      Restricciones alimentarias o alergias (Opcional)
-                    </label>
-                    <input
-                      type="text"
-                      id="restricciones"
-                      value={restricciones}
-                      onChange={(e) => setRestricciones(e.target.value)}
-                      placeholder="Ej: Vegetariano, intolerante al gluten, mariscos..."
-                      className="w-full px-4 py-3 rounded-xl border border-yute-natural/40 bg-white/90 text-verde-bosque font-sans text-sm focus:outline-none focus:border-dorado-antiguo transition-colors placeholder:text-madera-nogal/40"
-                    />
-                  </div>
-                )}
-
-                {/* Message for couple */}
-                <div>
-                  <label
-                    htmlFor="mensaje"
-                    className="block text-xs font-sans uppercase tracking-wider text-verde-bosque font-semibold mb-2 flex items-center justify-between"
-                  >
-                    <span>Dedicatoria o mensaje para los novios</span>
-                    <span className="text-[10px] text-madera-nogal font-normal uppercase">Opcional</span>
-                  </label>
-                  <textarea
-                    id="mensaje"
-                    rows={3}
-                    value={mensaje}
-                    onChange={(e) => setMensaje(e.target.value)}
-                    placeholder="Escribe tus buenos deseos o algún comentario cariñoso..."
-                    className="w-full px-4 py-3 rounded-xl border border-yute-natural/40 bg-white/90 text-verde-bosque font-sans text-sm focus:outline-none focus:border-dorado-antiguo transition-colors placeholder:text-madera-nogal/40 resize-none"
-                  />
-                </div>
-
-                {/* Submit button */}
-                <div className="pt-2">
                   <button
-                    type="submit"
+                    type="button"
                     disabled={isPending}
-                    className="w-full py-4 px-6 rounded-full bg-verde-bosque text-marfil font-sans text-xs uppercase tracking-[0.2em] font-semibold hover:bg-verde-bosque-light disabled:opacity-50 transition-all shadow-luxury flex items-center justify-center gap-2 cursor-pointer"
+                    onClick={handleDecline}
+                    className="mt-2 inline-flex items-center gap-1.5 font-sans text-xs text-madera-nogal/80 transition-colors hover:text-verde-bosque hover:underline underline-offset-4 disabled:opacity-50"
                   >
-                    {isPending ? (
-                      <>
-                        <span className="w-4 h-4 border-2 border-dorado-antiguo border-t-transparent rounded-full animate-spin" />
-                        <span>Enviando confirmación...</span>
-                      </>
-                    ) : (
-                      <>
-                        <Send className="w-4 h-4 text-dorado-antiguo" />
-                        <span>Enviar mi Confirmación</span>
-                      </>
-                    )}
+                    <XCircle className="h-3.5 w-3.5 text-madera-nogal/60" />
+                    <span>Lamentablemente no podré asistir</span>
                   </button>
                 </div>
-              </form>
+              </div>
+
+              <div className="mt-8 flex items-center justify-center gap-2 border-t border-yute-natural/20 pt-5 text-verde-salvia text-xs">
+                <Heart className="h-3.5 w-3.5 text-dorado-antiguo fill-dorado-antiguo/30" />
+                <span className="font-serif italic text-madera-nogal/75">
+                  Esperamos celebrar contigo este momento único
+                </span>
+              </div>
             </div>
           </FadeUp>
         )}

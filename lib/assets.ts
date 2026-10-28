@@ -1,12 +1,12 @@
 /**
- * Manifiesto de imágenes de la invitación.
+ * Manifiesto de fotos de la invitación.
  *
- * Cada "slot" tiene un nombre de archivo fijo. Para reemplazar una imagen basta con
- * subir tu archivo a la carpeta correspondiente con ESE nombre (sin tocar código).
- * Si el archivo no existe, se usa automáticamente la imagen por defecto de
- * `public/images/defaults/`.
+ * NOTA: Para las flores (FlowerDivider y FlowerAccent), YA NO ES NECESARIO modificar este archivo.
+ * Ahora puedes pasar directamente la ruta mediante el prop 'src' en el componente:
+ *   <FlowerDivider src="/images/flores/Separador.png" size="full" />
+ *   <FlowerAccent src="/images/flores/LateralIzq.png" size="lg" />
  *
- * Ver guía completa en `public/images/README.md`.
+ * Este archivo se conserva principalmente para la carga dinámica de fotos de portada/dresscode/ubicación.
  */
 
 /** Fotos (carpeta `public/images/fotos/`). Extensiones aceptadas: jpg, jpeg, webp, png. */
@@ -18,7 +18,10 @@ export type FlowerSlot =
   | "02-detalles-rsvp"
   | "03-final"
   | "lateral-izquierda"
-  | "lateral-derecha";
+  | "lateral-derecha"
+  | "separador"
+  | "final"
+  | "centro-exuberante";
 
 const PHOTO_EXTENSIONS = ["jpg", "jpeg", "webp", "png"] as const;
 const FLOWER_EXTENSIONS = ["png", "webp"] as const;
@@ -32,9 +35,62 @@ export function photoSources(slot: PhotoSlot): string[] {
 }
 
 export function flowerSources(slot: FlowerSlot): string[] {
+  // Mapeo específico según los archivos subidos por el usuario en public/images/flores/
+  const customUserFiles: Record<FlowerSlot, string[]> = {
+    "01-portada-bienvenida": [
+      "/images/flores/Separador.png",
+      "/images/flores/01-portada-bienvenida.png",
+      "/images/flores/01-portada-bienvenida.webp",
+    ],
+    "centro-exuberante": [
+      "/images/flores/Centro floral blanco y verde exuberante.png",
+      "/images/flores/Separador.png",
+    ],
+    "02-detalles-rsvp": [
+      "/images/flores/Separador.png",
+      "/images/flores/Centro floral blanco y verde exuberante.png",
+      "/images/flores/02-detalles-rsvp.png",
+      "/images/flores/02-detalles-rsvp.webp",
+    ],
+    "03-final": [
+      "/images/flores/Final.png",
+      "/images/flores/03-final.png",
+      "/images/flores/Separador.png",
+      "/images/flores/03-final.webp",
+    ],
+    "lateral-izquierda": [
+      "/images/flores/LateralIzq.png",
+      "/images/flores/lateral-izquierda.png",
+      "/images/flores/lateral-izquierda.webp",
+    ],
+    "lateral-derecha": [
+      "/images/flores/LateralDer.png",
+      "/images/flores/lateral-derecha.png",
+      "/images/flores/lateral-derecha.webp",
+    ],
+    "separador": [
+      "/images/flores/Separador.png",
+      "/images/flores/Centro floral blanco y verde exuberante.png",
+      "/images/flores/01-portada-bienvenida.png",
+    ],
+    "final": [
+      "/images/flores/Final.png",
+      "/images/flores/03-final.png",
+      "/images/flores/Separador.png",
+    ],
+  };
+
+  const defaultKey =
+    slot === "separador"
+      ? "01-portada-bienvenida"
+      : slot === "final"
+      ? "03-final"
+      : slot;
+
   return [
+    ...(customUserFiles[slot] || []),
     ...FLOWER_EXTENSIONS.map((ext) => `/images/flores/${slot}.${ext}`),
-    `/images/defaults/flores/${slot}.png`,
-    `/images/defaults/flores/${slot}.svg`,
+    `/images/defaults/flores/${defaultKey}.png`,
+    `/images/defaults/flores/${defaultKey}.svg`,
   ];
 }
