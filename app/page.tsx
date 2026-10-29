@@ -7,7 +7,6 @@ import LocationSection from "@/components/sections/LocationSection";
 import GiftSection from "@/components/sections/GiftSection";
 import TableSearchSection from "@/components/sections/TableSearchSection";
 import FooterSection from "@/components/sections/FooterSection";
-import MusicPlayer from "@/components/audio/MusicPlayer";
 
 export default function HomePage() {
   return (
@@ -19,14 +18,11 @@ export default function HomePage() {
       <GiftSection />
       <LocationSection />
 
-      {/* Sección de Búsqueda de Invitación y Ubicación de Mesa */}
+      {/* Sección de Búsqueda de Invitación */}
       <TableSearchSection />
 
       {/* Footer de cierre con CTA 'BUSCAR MI INVITACIÓN' */}
       <FooterSection />
-
-      {/* Reproductor de música ambiental */}
-      <MusicPlayer trackId="4l5HZ6iRc2oN5NtcT141yq" />
     </main>
   );
 }

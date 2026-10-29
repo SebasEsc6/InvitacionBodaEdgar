@@ -23,7 +23,7 @@ export default function FooterSection() {
         <FadeUp>
           <p
             style={{ fontFamily: "'Great Vibes', 'Great Vibes Local', var(--font-great-vibes), cursive" }}
-            className="font-title text-6xl sm:text-8xl font-normal leading-tight text-dorado-antiguo-light"
+            className="font-title text-6xl sm:text-8xl font-normal leading-tight text-dorado-antiguo-light drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)]"
           >
             ¡Te esperamos!
           </p>
@@ -35,14 +35,14 @@ export default function FooterSection() {
           </div>
           <p
             style={{ fontFamily: "'Great Vibes', 'Great Vibes Local', var(--font-great-vibes), cursive" }}
-            className="mt-6 font-title text-4xl sm:text-6xl text-dorado-antiguo-light"
+            className="mt-6 font-title text-4xl sm:text-6xl text-dorado-antiguo-light drop-shadow-[0_2px_6px_rgba(0,0,0,0.35)]"
           >
             Edgar y Camila
           </p>
-          <p className="mt-3 font-sans text-xs sm:text-sm uppercase tracking-widest text-yute-natural font-medium">
+          <p className="mt-3 font-sans text-xs sm:text-sm uppercase tracking-widest text-marfil font-medium drop-shadow-[0_1px_2px_rgba(0,0,0,0.25)]">
             05 de Diciembre de 2026
           </p>
-          <p className="mt-5 font-serif text-base sm:text-lg italic text-marfil/75 leading-relaxed">
+          <p className="mt-5 font-serif text-base sm:text-lg italic text-marfil font-normal leading-relaxed drop-shadow-[0_1px_3px_rgba(0,0,0,0.25)]">
             Con todo nuestro amor, gracias por ser parte fundamental de nuestra historia.
           </p>
 
@@ -51,15 +51,15 @@ export default function FooterSection() {
             {isInvitePage ? (
               <Link
                 href="/"
-                className="group inline-flex items-center gap-2 rounded-full border border-dorado-antiguo/40 bg-verde-bosque/60 px-6 py-3 font-sans text-xs sm:text-sm font-semibold uppercase tracking-wider text-marfil backdrop-blur-md shadow-gold transition-all duration-300 hover:bg-verde-bosque hover:border-dorado-antiguo hover:scale-105 active:scale-95"
+                className="group inline-flex items-center gap-2 rounded-full border border-dorado-antiguo/40 bg-verde-bosque-dark/70 px-6 py-3 font-sans text-xs sm:text-sm font-semibold uppercase tracking-wider text-marfil backdrop-blur-md shadow-gold transition-all duration-300 hover:bg-verde-bosque-dark hover:border-dorado-antiguo hover:scale-105 active:scale-95"
               >
                 <ArrowLeft className="h-4 w-4 text-dorado-antiguo-light transition-transform duration-300 group-hover:-translate-x-1" />
                 <span>Volver a la Página Principal</span>
               </Link>
             ) : (
               <a
-                href="#mesas"
-                className="group inline-flex items-center gap-2 rounded-full border border-dorado-antiguo/50 bg-verde-bosque/80 px-7 py-3.5 font-sans text-xs sm:text-sm font-semibold uppercase tracking-wider text-marfil backdrop-blur-md shadow-gold transition-all duration-300 hover:bg-verde-bosque hover:border-dorado-antiguo hover:scale-105 active:scale-95"
+                href="#invitaciones"
+                className="group inline-flex items-center gap-2 rounded-full border border-dorado-antiguo/50 bg-verde-bosque-dark/85 px-7 py-3.5 font-sans text-xs sm:text-sm font-semibold uppercase tracking-wider text-marfil backdrop-blur-md shadow-gold transition-all duration-300 hover:bg-verde-bosque-dark hover:border-dorado-antiguo hover:scale-105 active:scale-95"
               >
                 <Search className="h-4 w-4 text-dorado-antiguo-light transition-transform duration-300 group-hover:scale-110" />
                 <span>BUSCAR MI INVITACIÓN</span>

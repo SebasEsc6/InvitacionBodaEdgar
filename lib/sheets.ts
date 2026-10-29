@@ -8,15 +8,15 @@ import { GuestInvitation, GuestMember, GuestStatus, AttendanceResponse, RSVPForm
  *   C: cupos
  *   D: estado (Pendiente, Confirmado, Cancelado)          ← escrito por el RSVP
  *   E: fecha_confirmacion                                  ← escrito por el RSVP
- *   F: mesa
- *   G: asistentes_confirmados                              ← escrito por el RSVP
- *   H: restricciones_alimentarias
- *   I: mensaje_novios
- *   J: integrantes  (nombres separados por ";"  ej. "Ana Pérez; Juan Pérez")
- *   K: respuestas_individuales                             ← escrito por el RSVP
+ *   F: asistentes_confirmados                              ← escrito por el RSVP
+ *   G: integrantes  (nombres separados por ";"  ej. "Ana Pérez; Juan Pérez")
+ *   H: respuestas_individuales                             ← escrito por el RSVP
  *      (formato legible: "Ana Pérez: Asiste | Juan Pérez: No asiste")
+ *   I: enlace_invitacion                                   (fórmula)
+ *   J: mensaje_whatsapp                                    (fórmula)
+ *   K: dominio_base                                        (celda K2)
  */
-const SHEET_RANGE = "Invitados!A2:K";
+const SHEET_RANGE = "Invitados!A2:H";
 
 /** Datos crudos (sin integrantes resueltos) usados por el modo demo en memoria */
 interface MockGuestRow {
@@ -24,7 +24,6 @@ interface MockGuestRow {
   nombre_grupo: string;
   cupos: number;
   estado: GuestStatus;
-  mesa?: string;
   fecha_confirmacion?: string;
   asistentes_confirmados?: number;
   integrantes_raw?: string;
@@ -192,9 +191,24 @@ function serializeResponses(members: GuestMember[]): string {
   return members.map((m) => `${m.nombre}: ${m.respuesta ?? "Pendiente"}`).join(" | ");
 }
 
+function parseGroupToMembers(nombre_grupo: string, cupos: number): string[] {
+  if (!nombre_grupo) return [];
+  const parts = nombre_grupo
+    .split(/,\s*|\s+(?:y|e|&)\s+/i)
+    .map((s) => s.trim())
+    .filter(Boolean);
+
+  if (parts.length >= cupos) return parts.slice(0, cupos);
+  const result = [...parts];
+  while (result.length < cupos) {
+    result.push(`Acompañante ${result.length}`);
+  }
+  return result;
+}
+
 /**
  * Construye la lista de integrantes (uno por cupo) con su respuesta individual.
- * - Si no hay nombres en la columna J, se generan etiquetas genéricas.
+ * - Si no hay nombres en la columna G, se obtienen automáticamente del nombre del grupo.
  * - Si no hay respuestas individuales (registros antiguos), se infieren del estado global.
  */
 function buildMembers(params: {
@@ -208,11 +222,12 @@ function buildMembers(params: {
   const { nombre_grupo, estado, asistentes_confirmados } = params;
   const names = parseMemberNames(params.integrantes_raw);
   const cupos = Math.max(1, params.cupos || names.length || 1);
+  const fallback = names.length > 0 ? names : parseGroupToMembers(nombre_grupo, cupos);
 
   const resolvedNames = Array.from({ length: cupos }, (_, i) => {
-    if (names[i]) return names[i];
+    if (fallback[i]) return fallback[i];
     if (cupos === 1) return nombre_grupo;
-    return i === 0 && names.length === 0 ? `Invitado/a principal` : `Acompañante ${i}`;
+    return `Acompañante ${i}`;
   });
 
   const responses = parseResponses(params.respuestas_raw);
@@ -238,7 +253,7 @@ function rowToGuest(row: unknown[]): GuestInvitation {
   const nombre_grupo = str(row[1]) || "Estimado(a) Invitado(a)";
   const cupos = Number(row[2]) || 1;
   const estado = ((str(row[3]) as GuestStatus) || "Pendiente") as GuestStatus;
-  const asistentes_confirmados = str(row[6]) ? Number(row[6]) : undefined;
+  const asistentes_confirmados = str(row[5]) ? Number(row[5]) : undefined;
 
   return {
     id_invitacion: normalizeId(str(row[0])),
@@ -246,17 +261,14 @@ function rowToGuest(row: unknown[]): GuestInvitation {
     cupos,
     estado,
     fecha_confirmacion: str(row[4]) || undefined,
-    mesa: str(row[5]) || undefined,
     asistentes_confirmados,
-    restricciones_alimentarias: str(row[7]) || undefined,
-    mensaje_novios: str(row[8]) || undefined,
     integrantes: buildMembers({
       nombre_grupo,
       cupos,
       estado,
       asistentes_confirmados,
-      integrantes_raw: str(row[9]),
-      respuestas_raw: str(row[10]),
+      integrantes_raw: str(row[6]),
+      respuestas_raw: str(row[7]),
     }),
   };
 }
@@ -267,7 +279,6 @@ function mockToGuest(m: MockGuestRow): GuestInvitation {
     nombre_grupo: m.nombre_grupo,
     cupos: m.cupos,
     estado: m.estado,
-    mesa: m.mesa,
     fecha_confirmacion: m.fecha_confirmacion,
     asistentes_confirmados: m.asistentes_confirmados,
     integrantes: buildMembers(m),
@@ -359,7 +370,7 @@ export async function searchGuests(query: string): Promise<GuestInvitation[]> {
 
     for (const row of rows) {
       if (!row[0]) continue;
-      const haystack = [row[0], row[1], row[9]].map((v) => (v ? String(v) : "")).join(" ");
+      const haystack = [row[0], row[1], row[6]].map((v) => (v ? String(v) : "")).join(" ");
       if (normalizeSearchString(haystack).includes(cleanQuery)) {
         matchedGuests.push(rowToGuest(row));
       }
@@ -453,15 +464,14 @@ export async function updateGuestRSVP(
     // Header es fila 1, A2 es index 0 en nuestro array → fila real = rowIndex + 2
     const targetRow = rowIndex + 2;
 
-    // 2. Escritura atómica de las columnas del RSVP sin tocar F (mesa), H, I ni J
+    // 2. Escritura atómica de las columnas del RSVP sin tocar G (integrantes), I ni J
     await sheets.spreadsheets.values.batchUpdate({
       spreadsheetId: sheetId,
       requestBody: {
         valueInputOption: "USER_ENTERED",
         data: [
-          { range: `Invitados!D${targetRow}:E${targetRow}`, values: [[estado, now]] },
-          { range: `Invitados!G${targetRow}`, values: [[asistentes]] },
-          { range: `Invitados!K${targetRow}`, values: [[detalle]] },
+          { range: `Invitados!D${targetRow}:F${targetRow}`, values: [[estado, now, asistentes]] },
+          { range: `Invitados!H${targetRow}`, values: [[detalle]] },
         ],
       },
     });

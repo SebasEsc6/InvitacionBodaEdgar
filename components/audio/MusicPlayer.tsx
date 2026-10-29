@@ -130,6 +130,26 @@ export default function MusicPlayer({
     };
   }, [autoPlay, startPlayback]);
 
+  // 5. Garantizar que nunca existan múltiples elementos de audio sonando en simultáneo
+  useEffect(() => {
+    if (typeof document !== "undefined") {
+      const allAudios = document.querySelectorAll<HTMLAudioElement>("audio");
+      if (allAudios.length > 1) {
+        allAudios.forEach((audioEl) => {
+          if (audioEl !== audioRef.current) {
+            audioEl.pause();
+            audioEl.currentTime = 0;
+            audioEl.remove();
+          }
+        });
+      }
+    }
+
+    return () => {
+      audioRef.current?.pause();
+    };
+  }, []);
+
   // Manejo de reproducción / pausa manual del usuario
   const togglePlay = () => {
     setShowPrompt(false);
@@ -246,7 +266,7 @@ export default function MusicPlayer({
       )}
 
       {/* Botón flotante estilizado con monograma de Edgar & Camila */}
-      <div className="flex items-center bg-verde-bosque/95 backdrop-blur-md border border-dorado-antiguo/40 rounded-full shadow-luxury p-1.5 pl-2 gap-2.5 transition-transform hover:scale-105">
+      <div className="flex items-center bg-verde-bosque-dark/95 backdrop-blur-md border border-dorado-antiguo/50 rounded-full shadow-luxury p-1.5 pl-2 gap-2.5 transition-transform hover:scale-105">
         <button
           onClick={togglePlay}
           className="flex items-center gap-2.5 text-left text-marfil focus:outline-none cursor-pointer"

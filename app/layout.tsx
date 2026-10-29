@@ -47,6 +47,7 @@ export const metadata: Metadata = {
 };
 
 import SiteNav from "@/components/navigation/SiteNav";
+import MusicPlayer from "@/components/audio/MusicPlayer";
 
 export default function RootLayout({
   children,
@@ -69,6 +70,7 @@ export default function RootLayout({
       <body className="min-h-screen bg-verde-bosque-deep text-marfil antialiased selection:bg-verde-salvia selection:text-marfil">
         <SiteNav />
         {children}
+        <MusicPlayer trackId="4l5HZ6iRc2oN5NtcT141yq" />
       </body>
     </html>
   );

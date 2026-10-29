@@ -21,7 +21,7 @@ export default function SiteNav() {
       {isInvitePage ? (
         <Link
           href="/"
-          className="group inline-flex items-center gap-2 rounded-full border border-dorado-antiguo/40 bg-verde-bosque-deep/90 px-4 py-2 sm:px-5 sm:py-2.5 text-xs sm:text-sm font-sans font-medium tracking-wide text-marfil backdrop-blur-md shadow-gold transition-all duration-300 hover:bg-verde-bosque hover:border-dorado-antiguo hover:scale-[1.03] active:scale-95"
+          className="group inline-flex items-center gap-2 rounded-full border border-dorado-antiguo/50 bg-verde-bosque-dark/85 px-4 py-2 sm:px-5 sm:py-2.5 text-xs sm:text-sm font-sans font-medium tracking-wide text-marfil backdrop-blur-md shadow-gold transition-all duration-300 hover:bg-verde-bosque-dark hover:border-dorado-antiguo hover:scale-[1.03] active:scale-95"
           title="Volver a la página principal de la boda"
         >
           <ArrowLeft className="h-4 w-4 text-dorado-antiguo-light transition-transform duration-300 group-hover:-translate-x-1" />
@@ -29,9 +29,9 @@ export default function SiteNav() {
         </Link>
       ) : (
         <a
-          href="#mesas"
-          className="group inline-flex items-center gap-2 rounded-full border border-dorado-antiguo/40 bg-verde-bosque-deep/90 px-4 py-2 sm:px-5 sm:py-2.5 text-xs sm:text-sm font-sans font-medium tracking-wide text-marfil backdrop-blur-md shadow-gold transition-all duration-300 hover:bg-verde-bosque hover:border-dorado-antiguo hover:scale-[1.03] active:scale-95"
-          title="Buscar mi invitación personalizada y lugar de mesa"
+          href="#invitaciones"
+          className="group inline-flex items-center gap-2 rounded-full border border-dorado-antiguo/50 bg-verde-bosque-dark/85 px-4 py-2 sm:px-5 sm:py-2.5 text-xs sm:text-sm font-sans font-medium tracking-wide text-marfil backdrop-blur-md shadow-gold transition-all duration-300 hover:bg-verde-bosque-dark hover:border-dorado-antiguo hover:scale-[1.03] active:scale-95"
+          title="Buscar mi invitación personalizada y confirmar asistencia"
         >
           <Search className="h-4 w-4 text-dorado-antiguo-light transition-transform duration-300 group-hover:scale-110" />
           <span>Buscar mi Invitación</span>

@@ -2,7 +2,7 @@
 
 import React, { useState, useTransition } from "react";
 import confetti from "canvas-confetti";
-import { CheckCircle2, XCircle, Users, Sparkles, Loader2, UtensilsCrossed } from "lucide-react";
+import { CheckCircle2, XCircle, Users, Sparkles, Loader2 } from "lucide-react";
 import FadeUp from "../animations/FadeUp";
 import SectionHeading from "../ui/SectionHeading";
 import FlowerDivider from "../ui/FlowerDivider";
@@ -149,25 +149,6 @@ export default function RSVPSection({ guest }: RSVPSectionProps) {
                 )}
               </p>
 
-              {/* Información de mesa si está confirmada y asignada */}
-              {currentGuest.estado === "Confirmado" && (
-                <div className="mx-auto mt-6 max-w-md rounded-2xl border border-dorado-antiguo/30 bg-marfil p-4 text-center">
-                  <div className="flex items-center justify-center gap-2 text-dorado-antiguo-dark">
-                    <UtensilsCrossed className="h-4 w-4" />
-                    <span className="font-sans text-[11px] uppercase tracking-widest font-semibold">
-                      Ubicación de Mesa
-                    </span>
-                  </div>
-                  <p className="mt-1 font-serif text-lg font-medium text-verde-bosque sm:text-xl">
-                    {currentGuest.mesa || "En proceso de asignación"}
-                  </p>
-                  <p className="mt-1 font-sans text-[11px] text-madera-nogal/70">
-                    {currentGuest.mesa
-                      ? "Tu lugar te estará esperando al inicio de la recepción."
-                      : "Te indicaremos tu mesa asignada más cerca de la fecha."}
-                  </p>
-                </div>
-              )}
 
               {/* Botón para rectificar o modificar */}
               <div className="mt-8 border-t border-yute-natural/20 pt-6">

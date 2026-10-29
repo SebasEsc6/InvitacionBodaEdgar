@@ -22,14 +22,14 @@ export default function WelcomeSection() {
         <FadeUp>
           <h2
             style={{ fontFamily: "'Great Vibes', 'Great Vibes Local', var(--font-great-vibes), cursive" }}
-            className="font-title text-5xl sm:text-7xl font-normal leading-tight text-marfil"
+            className="font-title text-5xl sm:text-7xl font-normal leading-tight text-marfil drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)]"
           >
             ¡Queridos familiares y amigos!
           </h2>
         </FadeUp>
 
         <FadeUp delay={0.15}>
-          <p className="mx-auto mt-6 max-w-xl font-sans text-base sm:text-lg leading-relaxed text-marfil/90 font-normal">
+          <p className="mx-auto mt-6 max-w-xl font-sans text-base sm:text-lg leading-relaxed text-marfil font-normal drop-shadow-[0_1px_3px_rgba(0,0,0,0.25)]">
             Hay momentos en la vida que se convierten en recuerdos eternos, y compartirlos con las personas que amamos
             los hace aún más mágicos y especiales. Hoy hemos decidido unir nuestros caminos para recorrer juntos el
             resto de nuestras vidas, construyendo un hogar donde nunca falten el amor, el respeto, la complicidad y la
@@ -40,18 +40,18 @@ export default function WelcomeSection() {
         </FadeUp>
 
         <FadeUp delay={0.25}>
-          <p className="mt-10 font-serif text-4xl sm:text-5xl md:text-6xl font-light tracking-[-0.01em] text-marfil">
+          <p className="mt-10 font-serif text-4xl sm:text-5xl md:text-6xl font-light tracking-[-0.01em] text-marfil drop-shadow-[0_2px_6px_rgba(0,0,0,0.3)]">
             05.12.2026
           </p>
         </FadeUp>
 
         <FadeUp delay={0.35}>
-          <blockquote className="mx-auto mt-10 max-w-lg font-serif text-xl sm:text-2xl italic leading-relaxed text-dorado-antiguo-light">
+          <blockquote className="mx-auto mt-10 max-w-lg font-serif text-xl sm:text-2xl italic leading-relaxed text-marfil-50 drop-shadow-[0_1px_3px_rgba(0,0,0,0.3)]">
             &ldquo;El amor no consiste en mirarse el uno al otro, sino en mirar juntos en la misma dirección.&rdquo;
           </blockquote>
           <p
             style={{ fontFamily: "'Great Vibes', 'Great Vibes Local', var(--font-great-vibes), cursive" }}
-            className="mt-6 font-title text-4xl sm:text-5xl text-dorado-antiguo-light"
+            className="mt-6 font-title text-4xl sm:text-5xl text-dorado-antiguo-light drop-shadow-[0_2px_6px_rgba(0,0,0,0.35)]"
           >
             Edgar y Camila
           </p>

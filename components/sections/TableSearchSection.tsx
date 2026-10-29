@@ -4,7 +4,6 @@ import React, { useState, useTransition } from "react";
 import Link from "next/link";
 import {
   Search,
-  UtensilsCrossed,
   Users,
   CheckCircle2,
   Clock,
@@ -46,7 +45,10 @@ export default function TableSearchSection() {
   };
 
   return (
-    <section id="mesas" className="section-dark-alt relative text-marfil overflow-visible scroll-mt-10">
+    <section id="invitaciones" className="section-dark-alt relative text-marfil overflow-visible scroll-mt-10">
+      {/* Anclaje retrocompatible para enlaces antiguos */}
+      <span id="mesas" className="sr-only" />
+
       {/* Separador floral sobrepuesto en la intersección con la sección anterior */}
       <FlowerDivider
         src="/images/flores/Separador.png"
@@ -55,12 +57,12 @@ export default function TableSearchSection() {
       />
 
       <div className="mx-auto max-w-3xl px-6 pb-24 pt-32 text-center sm:pb-32 sm:pt-36 md:pt-28 lg:pt-32">
-        <SectionHeading title="Buscar mi Invitación" subtitle="Encuentra tu invitación de honor y lugar de mesa" />
+        <SectionHeading title="Buscar mi Invitación" subtitle="Encuentra tu pase y confirma tu asistencia" />
 
         <FadeUp delay={0.1}>
-          <p className="mx-auto mt-6 max-w-xl font-sans text-sm sm:text-base leading-relaxed text-marfil/90 font-normal">
+          <p className="mx-auto mt-6 max-w-xl font-sans text-sm sm:text-base leading-relaxed text-marfil font-normal drop-shadow-[0_1px_3px_rgba(0,0,0,0.25)]">
             Queremos que te sientas como en casa. Escribe tu nombre o apellido a continuación para consultar tu
-            invitación digital, confirmar la asistencia de tus acompañantes
+            invitación digital y confirmar la asistencia de tus acompañantes:
           </p>
         </FadeUp>
 
@@ -72,7 +74,7 @@ export default function TableSearchSection() {
                 <label htmlFor="search-guest" className="sr-only">
                   Buscar por nombre o apellido
                 </label>
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-yute-natural-light">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-dorado-antiguo-light">
                   <Search className="h-5 w-5" />
                 </div>
                 <input
@@ -84,7 +86,7 @@ export default function TableSearchSection() {
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="Escribe tu nombre o apellido..."
-                  className="w-full rounded-full border border-dorado-antiguo/50 bg-verde-bosque/90 py-3.5 pl-12 pr-4 font-sans text-sm sm:text-base text-marfil placeholder:text-marfil/50 focus:border-dorado-antiguo focus:bg-verde-bosque focus:outline-none focus:ring-2 focus:ring-dorado-antiguo/30 transition-all min-h-[52px]"
+                  className="w-full rounded-full border border-dorado-antiguo/50 bg-[#30351A]/55 py-3.5 pl-12 pr-4 font-sans text-sm sm:text-base text-marfil placeholder:text-marfil/65 focus:border-dorado-antiguo focus:bg-[#30351A]/75 focus:outline-none focus:ring-2 focus:ring-dorado-antiguo/30 transition-all min-h-[52px] backdrop-blur-md"
                   required
                 />
               </div>
@@ -92,7 +94,7 @@ export default function TableSearchSection() {
               <button
                 type="submit"
                 disabled={isPending || !query.trim()}
-                className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full border border-dorado-antiguo/70 bg-gradient-to-r from-emerald-800 to-verde-bosque px-8 py-3 font-sans text-xs sm:text-sm font-semibold uppercase tracking-wider text-marfil shadow-md transition-all hover:scale-102 hover:shadow-lg active:scale-98 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
+                className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full border border-dorado-antiguo/70 bg-gradient-to-r from-verde-bosque-dark to-verde-bosque px-8 py-3 font-sans text-xs sm:text-sm font-semibold uppercase tracking-wider text-marfil shadow-md transition-all hover:scale-102 hover:shadow-lg active:scale-98 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
               >
                 {isPending ? (
                   <>
@@ -122,12 +124,12 @@ export default function TableSearchSection() {
         {/* Estado inicial: Sugerencia antes de buscar */}
         {!hasSearched && (
           <FadeUp delay={0.3}>
-            <div className="mx-auto mt-10 max-w-md rounded-2xl border border-yute-natural/30 bg-verde-bosque-deep/60 p-5 text-center text-marfil/80 backdrop-blur-sm">
-              <div className="mx-auto mb-2 flex h-8 w-8 items-center justify-center rounded-full bg-verde-salvia/25 text-dorado-antiguo-light">
+            <div className="mx-auto mt-10 max-w-md rounded-2xl border border-dorado-antiguo/30 bg-[#30351A]/45 p-5 text-center text-marfil backdrop-blur-md">
+              <div className="mx-auto mb-2 flex h-8 w-8 items-center justify-center rounded-full bg-verde-salvia/35 text-dorado-antiguo-light">
                 <Info className="h-4 w-4" />
               </div>
-              <p className="font-sans text-xs sm:text-sm leading-relaxed">
-                Ingresa el nombre o familia como aparece en tu tarjeta para ver tu invitación personalizada.
+              <p className="font-sans text-xs sm:text-sm leading-relaxed text-marfil drop-shadow-[0_1px_2px_rgba(0,0,0,0.2)]">
+                Ingresa el nombre o familia como aparece en tu tarjeta para ver tu invitación personalizada y confirmar asistencia.
               </p>
             </div>
           </FadeUp>
@@ -196,41 +198,30 @@ export default function TableSearchSection() {
                       </div>
                     </div>
 
-                    {/* Tarjeta de Mesa Asignada */}
-                    <div className="my-6 rounded-2xl border border-dorado-antiguo/50 bg-gradient-to-br from-white via-marfil-50 to-marfil-100 p-5 shadow-xs">
-                      <div className="flex items-center gap-2 text-dorado-antiguo-dark">
-                        <UtensilsCrossed className="h-4 w-4" />
-                        <span className="font-sans text-xs uppercase tracking-widest font-semibold">
-                          Mesa Asignada
+                    {/* Desglose de integrantes si aplica */}
+                    {guest.integrantes && guest.integrantes.length > 0 && (
+                      <div className="my-5 rounded-2xl border border-dorado-antiguo/30 bg-white/70 p-4">
+                        <span className="block font-sans text-[11px] uppercase tracking-wider text-verde-salvia-dark font-medium mb-2">
+                          Pase reservado para:
                         </span>
+                        <div className="flex flex-wrap gap-2">
+                          {guest.integrantes.map((member, i) => (
+                            <span
+                              key={i}
+                              className="inline-flex items-center rounded-full bg-verde-bosque/5 border border-yute-natural/30 px-3 py-1 font-serif text-sm text-verde-bosque"
+                            >
+                              {member.nombre}
+                            </span>
+                          ))}
+                        </div>
                       </div>
-
-                      {guest.mesa ? (
-                        <div className="mt-2">
-                          <p className="font-serif text-2xl font-semibold text-verde-bosque sm:text-3xl">
-                            {guest.mesa}
-                          </p>
-                          <p className="mt-1 font-sans text-sm text-madera-nogal">
-                            Tu puesto y el de tus acompañantes estarán dispuestos en esta mesa durante el banquete.
-                          </p>
-                        </div>
-                      ) : (
-                        <div className="mt-2">
-                          <p className="font-serif text-xl font-medium text-verde-bosque">
-                            Mesa en proceso de asignación
-                          </p>
-                          <p className="mt-1 font-sans text-sm text-madera-nogal/80">
-                            Estamos coordinando la distribución de los lugares. Muy pronto verás aquí tu número de mesa.
-                          </p>
-                        </div>
-                      )}
-                    </div>
+                    )}
 
                     {/* Botón de acceso directo a su invitación personalizada */}
                     <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
                       <p className="font-serif italic text-sm text-madera-nogal text-center sm:text-left">
                         {guest.estado === "Pendiente"
-                          ? "Recuerda confirmar la asistencia de tus acompañantes."
+                          ? "Confirma la asistencia individual de cada persona."
                           : "¡Será un verdadero honor contar con tu compañía!"}
                       </p>
 

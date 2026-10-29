@@ -10,12 +10,10 @@ import {
   ArrowLeft,
   Sparkles,
   Loader2,
-  UtensilsCrossed,
   Check,
   X,
 } from "lucide-react";
 import SmartImage from "../ui/SmartImage";
-import MusicPlayer from "../audio/MusicPlayer";
 import { photoSources } from "@/lib/assets";
 import { GuestInvitation } from "@/lib/types";
 import { submitRSVP } from "@/app/actions/rsvp";
@@ -158,27 +156,12 @@ export default function IsolatedInvitationView({ guest }: IsolatedInvitationView
         fetchPriority="high"
         className="fixed inset-0 -z-30 h-full w-full object-cover object-[50%_22%] sm:object-[50%_28%]"
       />
-      {/* Capas de oscurecimiento suave para legibilidad idéntica a la portada original */}
-      <div className="fixed inset-0 -z-20 bg-gradient-to-b from-black/55 via-black/35 to-black/85" />
+      {/* Capas de oscurecimiento suave para legibilidad basadas en la gama de verde refinado */}
+      <div className="fixed inset-0 -z-20 bg-gradient-to-b from-black/40 via-[#424925]/25 to-[#424925]/85" />
       <div className="fixed inset-0 -z-10 bg-radial-vignette opacity-70 pointer-events-none" />
 
-      {/* 2. Barra Superior: Botón flotante a la Página Principal */}
-      <header className="relative z-20 w-full max-w-4xl mx-auto px-4 sm:px-6 pt-5 sm:pt-6 flex items-center justify-between">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-black/40 hover:bg-black/60 px-4 py-2 text-xs font-sans text-marfil backdrop-blur-md shadow-sm transition-all hover:scale-[1.02] active:scale-95"
-        >
-          <ArrowLeft className="h-3.5 w-3.5 text-marfil" />
-          <span>Página Principal</span>
-        </Link>
-
-        <span className="font-serif italic text-xs text-dorado-antiguo-light/80 hidden sm:inline">
-          Edgar &amp; Camila · 2026
-        </span>
-      </header>
-
-      {/* 3. Contenido Central: Nombres en Cursiva + Tarjeta Translúcida */}
-      <main className="relative z-10 w-full max-w-xl mx-auto px-4 sm:px-6 py-6 flex flex-col items-center text-center">
+      {/* 2. Contenido Central: Nombres en Cursiva + Tarjeta Translúcida */}
+      <main className="relative z-10 w-full max-w-xl mx-auto px-4 sm:px-6 pt-16 sm:pt-20 pb-6 flex flex-col items-center text-center">
         {/* Nombres en Great Vibes estilo caligráfico */}
         <div className="select-none mb-4 sm:mb-6">
           <span
@@ -201,8 +184,8 @@ export default function IsolatedInvitationView({ guest }: IsolatedInvitationView
           </span>
         </div>
 
-        {/* Tarjeta Flotante Translúcida con efecto Glassmorphism */}
-        <div className="w-full rounded-[28px] sm:rounded-3xl border border-dorado-antiguo/35 bg-[#12221b]/80 sm:bg-[#12221b]/85 backdrop-blur-md p-6 sm:p-8 text-marfil shadow-2xl transition-all">
+        {/* Tarjeta Flotante Translúcida con efecto Glassmorphism en tono verde refinado */}
+        <div className="w-full rounded-[28px] sm:rounded-3xl border border-dorado-antiguo/35 bg-[#393E20]/85 sm:bg-[#393E20]/90 backdrop-blur-md p-6 sm:p-8 text-marfil shadow-2xl transition-all">
           <span className="font-sans text-[11px] sm:text-xs uppercase tracking-[0.25em] text-dorado-antiguo-light font-medium">
             Invitación de Honor
           </span>
@@ -319,25 +302,6 @@ export default function IsolatedInvitationView({ guest }: IsolatedInvitationView
                 })}
               </div>
 
-              {/* Mesa Asignada si está disponible */}
-              {currentGuest.estado === "Confirmado" && (
-                <div className="rounded-2xl border border-dorado-antiguo/30 bg-white/5 p-3.5 shadow-sm text-center">
-                  <div className="flex items-center justify-center gap-1.5 text-dorado-antiguo-light">
-                    <UtensilsCrossed className="h-3.5 w-3.5" />
-                    <span className="font-sans text-[11px] uppercase tracking-widest font-semibold">
-                      Ubicación de Mesa
-                    </span>
-                  </div>
-                  <p className="mt-1 font-serif text-xl sm:text-2xl font-medium text-marfil">
-                    {currentGuest.mesa || "Mesa en proceso de asignación"}
-                  </p>
-                  <p className="mt-0.5 font-sans text-xs text-marfil/70">
-                    {currentGuest.mesa
-                      ? "Tus lugares reservados estarán dispuestos en esta mesa durante el banquete."
-                      : "Te confirmaremos el número de mesa muy pronto antes de la fecha."}
-                  </p>
-                </div>
-              )}
 
               {/* Botón para modificar la respuesta */}
               <div className="pt-2">
@@ -556,9 +520,6 @@ export default function IsolatedInvitationView({ guest }: IsolatedInvitationView
           ))}
         </div>
       </footer>
-
-      {/* Reproductor musical continuo en la esquina inferior */}
-      <MusicPlayer trackId="4l5HZ6iRc2oN5NtcT141yq" />
     </div>
   );
 }

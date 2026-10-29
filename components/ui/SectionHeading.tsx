@@ -25,7 +25,7 @@ export default function SectionHeading({
     <FadeUp className={`text-center ${className}`}>
       <h2
         className={`font-serif text-4xl sm:text-5xl md:text-6xl font-normal tracking-[-0.02em] leading-tight ${
-          dark ? "text-marfil" : "text-verde-bosque"
+          dark ? "text-marfil drop-shadow-[0_2px_6px_rgba(0,0,0,0.3)]" : "text-verde-bosque"
         }`}
       >
         {title}
@@ -33,7 +33,7 @@ export default function SectionHeading({
       {subtitle && (
         <p
           className={`mt-2 font-sans text-sm sm:text-base tracking-wide font-normal ${
-            dark ? "text-yute-natural-light/90" : "text-madera-nogal"
+            dark ? "text-marfil/90 drop-shadow-[0_1px_3px_rgba(0,0,0,0.25)]" : "text-madera-nogal"
           }`}
         >
           {subtitle}

@@ -48,7 +48,7 @@ export default function DressCodeSection() {
         <FadeUp delay={0.05}>
           <p
             style={{ fontFamily: "'Great Vibes', 'Great Vibes Local', var(--font-great-vibes), cursive" }}
-            className="font-title -mt-1 text-5xl sm:text-6xl text-dorado-antiguo-light"
+            className="font-title -mt-1 text-5xl sm:text-6xl text-dorado-antiguo-light drop-shadow-[0_2px_6px_rgba(0,0,0,0.35)]"
           >
             Soft Elegance
           </p>
@@ -87,12 +87,12 @@ export default function DressCodeSection() {
 
         {/* Colores reservados por tipo de invitado */}
         <FadeUp delay={0.2}>
-          <h3 className="mt-10 font-serif text-lg sm:text-xl italic text-yute-natural-light">Colores reservados</h3>
+          <h3 className="mt-10 font-serif text-lg sm:text-xl italic text-marfil drop-shadow-[0_1px_3px_rgba(0,0,0,0.3)]">Colores reservados</h3>
           <ul className="mx-auto mt-5 grid max-w-3xl grid-cols-1 gap-4 sm:grid-cols-3">
             {dressRules.map((rule) => (
               <li
                 key={rule.audience}
-                className="group rounded-2xl border border-dorado-antiguo/30 bg-verde-bosque-deep/50 px-5 py-6 backdrop-blur-sm transition-colors duration-300 hover:border-dorado-antiguo/60 shadow-sm"
+                className="group rounded-2xl border border-dorado-antiguo/30 bg-[#30351A]/45 px-5 py-6 backdrop-blur-md transition-colors duration-300 hover:border-dorado-antiguo/60 shadow-sm"
               >
                 <div className="flex items-center justify-center gap-2.5" aria-hidden="true">
                   {rule.colors.map((color) => (
@@ -104,10 +104,10 @@ export default function DressCodeSection() {
                     />
                   ))}
                 </div>
-                <p className="mt-4 font-sans text-xs sm:text-sm uppercase tracking-[0.2em] text-marfil/75 font-medium">
+                <p className="mt-4 font-sans text-xs sm:text-sm uppercase tracking-[0.2em] text-marfil font-medium drop-shadow-[0_1px_2px_rgba(0,0,0,0.25)]">
                   {rule.audience}
                 </p>
-                <p className="mt-1 font-serif text-2xl text-marfil font-normal">{rule.label}</p>
+                <p className="mt-1 font-serif text-2xl text-marfil font-normal drop-shadow-[0_1px_3px_rgba(0,0,0,0.3)]">{rule.label}</p>
               </li>
             ))}
           </ul>
@@ -118,12 +118,12 @@ export default function DressCodeSection() {
           <div className="mx-auto mt-14 max-w-3xl border-t border-dorado-antiguo/20 pt-10">
             <h3
               style={{ fontFamily: "'Great Vibes', 'Great Vibes Local', var(--font-great-vibes), cursive" }}
-              className="font-title text-5xl sm:text-6xl text-marfil mb-2"
+              className="font-title text-5xl sm:text-6xl text-marfil mb-2 drop-shadow-[0_2px_6px_rgba(0,0,0,0.3)]"
             >
               Inspírate
             </h3>
-            <p className="font-sans text-sm sm:text-base text-marfil/80 font-normal mb-8">
-              Ideas y combinaciones en tonos verde y blanco para que luzcas espectacular:
+            <p className="font-sans text-sm sm:text-base text-marfil font-normal mb-8 drop-shadow-[0_1px_2px_rgba(0,0,0,0.25)]">
+              Ideas y combinaciones para que luzcas espectacular:
             </p>
 
             <PinterestBoard shortUrl="https://pin.it/tAEQlpjXc" />

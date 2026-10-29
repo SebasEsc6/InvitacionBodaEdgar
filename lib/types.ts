@@ -16,11 +16,8 @@ export interface GuestInvitation {
   estado: GuestStatus;
   /** Integrantes de la invitación (uno por cupo), con su respuesta individual */
   integrantes: GuestMember[];
-  mesa?: string;
   fecha_confirmacion?: string;
   asistentes_confirmados?: number;
-  restricciones_alimentarias?: string;
-  mensaje_novios?: string;
 }
 
 /**
@@ -31,8 +28,6 @@ export interface GuestInvitation {
 export interface RSVPFormData {
   id_invitacion: string;
   asistencia: boolean[];
-  restricciones_alimentarias?: string;
-  mensaje_novios?: string;
 }
 
 export interface EventDetails {

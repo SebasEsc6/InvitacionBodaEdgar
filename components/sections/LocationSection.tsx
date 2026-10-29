@@ -23,8 +23,8 @@ export default function LocationSection() {
         <SectionHeading title="Ubicación" subtitle="Lugar de la celebración" />
 
         <FadeUp delay={0.1}>
-          <p className="mx-auto mt-6 max-w-xl font-sans text-sm sm:text-base leading-relaxed text-marfil/90 font-normal">
-            Que empiece desde un rincón mágico rodeado…
+          <p className="mx-auto mt-6 max-w-xl font-sans text-sm sm:text-base leading-relaxed text-marfil font-normal drop-shadow-[0_1px_3px_rgba(0,0,0,0.25)]">
+            Que empiece desde un rincón mágico rodeado de naturaleza y calidez para celebrar juntos este gran día.
           </p>
         </FadeUp>
       </div>
@@ -49,7 +49,7 @@ export default function LocationSection() {
           <div className="absolute inset-0 -z-10 bg-gradient-to-t from-verde-bosque-deep via-verde-bosque-deep/35 to-transparent" />
 
           <div className="absolute inset-x-0 bottom-[14%] px-6 text-center">
-            <MapPin className="mx-auto h-6 w-6 text-dorado-antiguo-light" strokeWidth={1.5} aria-hidden="true" />
+            <MapPin className="mx-auto h-5 w-5 text-dorado-antiguo-light" strokeWidth={1.5} aria-hidden="true" />
             <h3 className="mt-2 font-serif text-3xl sm:text-4xl md:text-5xl font-light italic text-marfil drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)]">
               {EVENT_VENUE}
             </h3>
@@ -59,13 +59,13 @@ export default function LocationSection() {
 
       <div className="mx-auto max-w-2xl px-6 text-center">
         <FadeUp delay={0.1}>
-          <p className="mx-auto mt-3 max-w-lg font-sans text-sm sm:text-base leading-relaxed text-marfil/80 font-normal">
+          <p className="mx-auto mt-2 max-w-md font-sans text-xs sm:text-sm leading-relaxed text-marfil font-normal drop-shadow-[0_1px_2px_rgba(0,0,0,0.2)]">
             Próximamente compartiremos las coordenadas exactas y enlaces directos de Google Maps y Waze.
           </p>
 
           <div className="mt-8 flex justify-center">
-            <div className="inline-flex items-center gap-2 rounded-full border border-dorado-antiguo/40 bg-verde-bosque-deep/80 px-7 py-3 font-sans text-xs sm:text-sm uppercase tracking-wider text-dorado-antiguo-light shadow-sm backdrop-blur-sm font-medium">
-              <Navigation className="h-4 w-4 text-dorado-antiguo" />
+            <div className="inline-flex items-center gap-2 rounded-full border border-dorado-antiguo/40 bg-verde-bosque-dark/60 px-6 py-2.5 font-sans text-xs uppercase tracking-wider text-marfil shadow-sm backdrop-blur-md">
+              <Navigation className="h-3.5 w-3.5 text-dorado-antiguo-light" />
               <span>Mapa disponible pronto</span>
             </div>
           </div>

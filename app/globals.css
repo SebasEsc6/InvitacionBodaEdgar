@@ -49,11 +49,11 @@
   --color-verde-salvia-light: #AAA867;
   --color-verde-salvia-dark: #6E6C33;
 
-  /* Moss profundo para fondos oscuros */
-  --color-verde-bosque: #3D4426;
-  --color-verde-bosque-light: #545C35;
-  --color-verde-bosque-dark: #2B301B;
-  --color-verde-bosque-deep: #1D2112;
+  /* Verde bosque refinado acercándose al Moss (más claro que el negro anterior, sin ser Moss puro) */
+  --color-verde-bosque: #4A5229;
+  --color-verde-bosque-light: #586131;
+  --color-verde-bosque-dark: #30351A;
+  --color-verde-bosque-deep: #424925;
 
   /* Apricot */
   --color-yute-natural: #F29C5E;
@@ -120,20 +120,20 @@ span.font-title {
 }
 
 :root {
-  --background: #15180D;
+  --background: #424925;
   --foreground: #FBF3E8;
 }
 
 html {
   font-size: 17px;
   scroll-behavior: smooth;
-  background-color: #15180D;
+  background-color: #424925;
   color: #FBF3E8;
 }
 
 body {
   font-family: var(--font-sans);
-  background-color: #15180D;
+  background-color: #424925;
   color: #FBF3E8;
   overflow-x: hidden;
   position: relative;
@@ -152,31 +152,31 @@ body {
 }
 
 .bg-dark-forest {
-  background-color: #3D4426;
+  background-color: #424925;
   background-image: radial-gradient(rgba(235, 178, 63, 0.08) 1px, transparent 0);
   background-size: 28px 28px;
 }
 
-/* ===== Fondos por tipo de sección (diseño "editorial": oscuro / papel durazno) ===== */
+/* ===== Fondos por tipo de sección (más claro acercándose al Moss, sin ser Moss puro) ===== */
 .section-dark {
-  background-color: #1D2112;
+  background-color: #424925;
   background-image:
-    radial-gradient(ellipse at 50% 0%, rgba(242, 156, 94, 0.07), transparent 60%),
-    radial-gradient(rgba(235, 178, 63, 0.07) 1px, transparent 0);
+    radial-gradient(ellipse at 50% 0%, rgba(242, 156, 94, 0.09), transparent 60%),
+    radial-gradient(rgba(235, 178, 63, 0.08) 1px, transparent 0);
   background-size: 100% 100%, 28px 28px;
 }
 
 .section-dark-alt {
-  background-color: #252A17;
+  background-color: #4A5229;
   background-image:
-    radial-gradient(ellipse at 50% 100%, rgba(159, 182, 211, 0.06), transparent 60%),
-    radial-gradient(rgba(235, 178, 63, 0.07) 1px, transparent 0);
+    radial-gradient(ellipse at 50% 100%, rgba(159, 182, 211, 0.07), transparent 60%),
+    radial-gradient(rgba(235, 178, 63, 0.08) 1px, transparent 0);
   background-size: 100% 100%, 28px 28px;
 }
 
 .section-deep {
-  background-color: #15180D;
-  background-image: radial-gradient(rgba(235, 178, 63, 0.06) 1px, transparent 0);
+  background-color: #363B1D;
+  background-image: radial-gradient(rgba(235, 178, 63, 0.07) 1px, transparent 0);
   background-size: 28px 28px;
 }
 
@@ -196,11 +196,11 @@ dialog:modal {
 dialog::backdrop {
   overflow: hidden;
   overscroll-behavior: contain;
-  background-color: rgba(21, 24, 13, 0.82);
+  background-color: rgba(48, 53, 26, 0.80);
   backdrop-filter: blur(6px);
 }
 
-/* Desvanece arriba y abajo para fundir una foto con el fondo oscuro */
+/* Desvanece arriba y abajo para fundir una foto con el fondo */
 .fade-edges-y {
   -webkit-mask-image: linear-gradient(to bottom, transparent, #000 14%, #000 86%, transparent);
   mask-image: linear-gradient(to bottom, transparent, #000 14%, #000 86%, transparent);
@@ -226,7 +226,7 @@ dialog::backdrop {
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #15180D;
+  background: #363B1D;
 }
 ::-webkit-scrollbar-thumb {
   background: #F29C5E;
