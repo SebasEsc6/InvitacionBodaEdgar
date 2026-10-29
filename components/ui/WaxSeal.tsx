@@ -21,9 +21,9 @@ export default function WaxSeal({
     <div
       className={`relative inline-flex items-center justify-center rounded-full select-none ${sizeClasses[size]} ${className}`}
       style={{
-        background: "radial-gradient(circle at 35% 35%, #D4BC7B 0%, #B79A53 50%, #8A6F33 100%)",
+        background: "radial-gradient(circle at 35% 35%, #F3CB76 0%, #EBB23F 45%, #C65A32 100%)",
         boxShadow:
-          "inset 0 2px 4px rgba(255, 255, 255, 0.4), inset 0 -3px 6px rgba(0, 0, 0, 0.35), 0 8px 20px -4px rgba(138, 111, 51, 0.4)",
+          "inset 0 2px 4px rgba(255, 255, 255, 0.4), inset 0 -3px 6px rgba(0, 0, 0, 0.35), 0 8px 20px -4px rgba(198, 90, 50, 0.4)",
       }}
     >
       {/* Outer irregular seal ring */}

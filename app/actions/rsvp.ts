@@ -2,28 +2,40 @@
 
 import { revalidatePath } from "next/cache";
 import { updateGuestRSVP } from "@/lib/sheets";
-import { RSVPFormData } from "@/lib/types";
+import { GuestInvitation, RSVPFormData } from "@/lib/types";
 
-export async function submitRSVP(formData: RSVPFormData) {
+const MAX_MEMBERS = 30;
+
+export async function submitRSVP(
+  formData: RSVPFormData
+): Promise<{ success: boolean; error?: string; guest?: GuestInvitation }> {
   try {
-    if (!formData.id_invitacion) {
+    if (!formData?.id_invitacion || typeof formData.id_invitacion !== "string") {
       return { success: false, error: "Identificador de invitación inválido." };
     }
 
-    if (!formData.estado || (formData.estado !== "Confirmado" && formData.estado !== "Cancelado")) {
-      return { success: false, error: "Debes seleccionar si confirmas o cancelas tu asistencia." };
+    const { asistencia } = formData;
+    if (
+      !Array.isArray(asistencia) ||
+      asistencia.length === 0 ||
+      asistencia.length > MAX_MEMBERS ||
+      !asistencia.every((v) => typeof v === "boolean")
+    ) {
+      return { success: false, error: "Indica la asistencia de cada integrante de la invitación." };
     }
 
-    const result = await updateGuestRSVP(formData);
+    const result = await updateGuestRSVP({
+      id_invitacion: formData.id_invitacion,
+      asistencia,
+    });
 
     if (result.success) {
-      // Revalida la página dinámica para que el Server Component se actualice al nuevo estado
+      // Revalida la página dinámica para que el Server Component refleje la nueva respuesta
       revalidatePath(`/invite/${formData.id_invitacion}`);
-      revalidatePath(`/`);
     }
 
     return result;
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("[Action RSVP] Error en submitRSVP:", error);
     return {
       success: false,

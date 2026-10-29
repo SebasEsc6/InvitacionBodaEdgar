@@ -2,12 +2,13 @@
 
 import React, { useState, useTransition } from "react";
 import confetti from "canvas-confetti";
-import { CheckCircle2, XCircle, Heart, Users, Sparkles, Loader2, UtensilsCrossed } from "lucide-react";
+import { CheckCircle2, XCircle, Users, Sparkles, Loader2, UtensilsCrossed } from "lucide-react";
 import FadeUp from "../animations/FadeUp";
 import SectionHeading from "../ui/SectionHeading";
 import FlowerDivider from "../ui/FlowerDivider";
 import { GuestInvitation } from "@/lib/types";
 import { submitRSVP } from "@/app/actions/rsvp";
+import { EVENT_DATE_LABEL, EVENT_TIME_LABEL, RSVP_DEADLINE_LABEL } from "@/lib/event";
 
 interface RSVPSectionProps {
   guest: GuestInvitation;
@@ -26,7 +27,7 @@ export default function RSVPSection({ guest }: RSVPSectionProps) {
         particleCount: 100,
         spread: 80,
         origin: { y: 0.6 },
-        colors: ["#B79A53", "#777D62", "#263D30", "#C4A77D", "#F4F0E6"],
+        colors: ["#EBB23F", "#C65A32", "#8E8C47", "#F29C5E", "#FBF3E8"],
       });
     } catch {
       // safe fallback
@@ -38,16 +39,11 @@ export default function RSVPSection({ guest }: RSVPSectionProps) {
     startTransition(async () => {
       const response = await submitRSVP({
         id_invitacion: currentGuest.id_invitacion,
-        estado: "Confirmado",
-        asistentes_confirmados: currentGuest.cupos,
+        asistencia: Array(currentGuest.integrantes.length).fill(true),
       });
 
-      if (response.success) {
-        setCurrentGuest((prev) => ({
-          ...prev,
-          estado: "Confirmado",
-          asistentes_confirmados: prev.cupos,
-        }));
+      if (response.success && response.guest) {
+        setCurrentGuest(response.guest);
         triggerConfetti();
       } else {
         setErrorMessage(response.error || "No pudimos guardar tu confirmación. Intenta nuevamente.");
@@ -60,16 +56,11 @@ export default function RSVPSection({ guest }: RSVPSectionProps) {
     startTransition(async () => {
       const response = await submitRSVP({
         id_invitacion: currentGuest.id_invitacion,
-        estado: "Cancelado",
-        asistentes_confirmados: 0,
+        asistencia: Array(currentGuest.integrantes.length).fill(false),
       });
 
-      if (response.success) {
-        setCurrentGuest((prev) => ({
-          ...prev,
-          estado: "Cancelado",
-          asistentes_confirmados: 0,
-        }));
+      if (response.success && response.guest) {
+        setCurrentGuest(response.guest);
       } else {
         setErrorMessage(response.error || "No fue posible procesar tu solicitud. Intenta nuevamente.");
       }
@@ -90,16 +81,16 @@ export default function RSVPSection({ guest }: RSVPSectionProps) {
 
         <FadeUp delay={0.1}>
           <p className="mt-6 font-serif text-3xl sm:text-4xl md:text-5xl font-light tracking-[-0.01em] text-marfil">
-            05.12.2026
+            {EVENT_DATE_LABEL}
           </p>
           <p className="mt-1 font-serif text-xl sm:text-2xl font-light text-dorado-antiguo-light">
-            4:00 PM
+            {EVENT_TIME_LABEL}
           </p>
           <p className="mx-auto mt-4 max-w-md font-sans text-xs sm:text-sm leading-relaxed text-marfil/75 font-light">
             Nos llena de ilusión compartir este paso trascendental con las personas que más amamos.
           </p>
           <p className="mt-2 font-sans text-xs text-dorado-antiguo-light/85 font-light mb-8">
-            Agradecemos confirmar tu asistencia antes del 13 de noviembre de 2026
+            Agradecemos confirmar tu asistencia antes del {RSVP_DEADLINE_LABEL}
           </p>
         </FadeUp>
 
@@ -145,8 +136,8 @@ export default function RSVPSection({ guest }: RSVPSectionProps) {
                   <>
                     Nos alegra infinitamente saber que nos acompañarás el 5 de diciembre. Hemos reservado{" "}
                     <strong className="text-verde-bosque font-semibold">
-                      {currentGuest.asistentes_confirmados || currentGuest.cupos}{" "}
-                      {(currentGuest.asistentes_confirmados || currentGuest.cupos) === 1 ? "lugar" : "lugares"}
+                      {currentGuest.asistentes_confirmados ?? currentGuest.cupos}{" "}
+                      {(currentGuest.asistentes_confirmados ?? currentGuest.cupos) === 1 ? "lugar" : "lugares"}
                     </strong>{" "}
                     con todo nuestro cariño.
                   </>
@@ -184,7 +175,7 @@ export default function RSVPSection({ guest }: RSVPSectionProps) {
                   type="button"
                   disabled={isPending}
                   onClick={() => setCurrentGuest((prev) => ({ ...prev, estado: "Pendiente" }))}
-                  className="font-sans text-xs text-verde-salvia underline underline-offset-4 transition-colors hover:text-verde-bosque disabled:opacity-50"
+                  className="font-sans text-xs text-verde-salvia underline underline-offset-4 transition-colors hover:text-verde-bosque disabled:opacity-50 cursor-pointer"
                 >
                   ¿Deseas modificar tu respuesta? Haz clic aquí
                 </button>
@@ -224,7 +215,7 @@ export default function RSVPSection({ guest }: RSVPSectionProps) {
                   type="button"
                   disabled={isPending}
                   onClick={handleConfirm}
-                  className="group relative flex w-full items-center justify-center gap-3 overflow-hidden rounded-full border border-dorado-antiguo/60 bg-gradient-to-r from-emerald-800 via-verde-bosque to-emerald-900 px-8 py-4.5 font-sans text-sm font-medium uppercase tracking-wider text-marfil shadow-luxury transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-70"
+                  className="group relative flex w-full items-center justify-center gap-3 overflow-hidden rounded-full border border-dorado-antiguo/60 bg-gradient-to-r from-emerald-800 via-verde-bosque to-emerald-900 px-8 py-4.5 font-sans text-sm font-medium uppercase tracking-wider text-marfil shadow-luxury transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-70 cursor-pointer"
                 >
                   <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/15 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
                   {isPending ? (
@@ -247,19 +238,12 @@ export default function RSVPSection({ guest }: RSVPSectionProps) {
                     type="button"
                     disabled={isPending}
                     onClick={handleDecline}
-                    className="mt-2 inline-flex items-center gap-1.5 font-sans text-xs text-madera-nogal/80 transition-colors hover:text-verde-bosque hover:underline underline-offset-4 disabled:opacity-50"
+                    className="mt-2 inline-flex items-center gap-1.5 font-sans text-xs text-madera-nogal/80 transition-colors hover:text-verde-bosque hover:underline underline-offset-4 disabled:opacity-50 cursor-pointer"
                   >
                     <XCircle className="h-3.5 w-3.5 text-madera-nogal/60" />
                     <span>Lamentablemente no podré asistir</span>
                   </button>
                 </div>
-              </div>
-
-              <div className="mt-8 flex items-center justify-center gap-2 border-t border-yute-natural/20 pt-5 text-verde-salvia text-xs">
-                <Heart className="h-3.5 w-3.5 text-dorado-antiguo fill-dorado-antiguo/30" />
-                <span className="font-serif italic text-madera-nogal/75">
-                  Esperamos celebrar contigo este momento único
-                </span>
               </div>
             </div>
           </FadeUp>

@@ -2,41 +2,82 @@
 @import "tailwindcss";
 
 @theme {
-  --color-marfil: #F4F0E6;
-  --color-marfil-50: #FAF8F3;
-  --color-marfil-100: #F4F0E6;
-  --color-marfil-200: #E8E0CD;
-  --color-marfil-300: #DCD0B4;
+  /* ================================================================
+     Paleta "Golden Hour Garden" (referencia: Peach, Golden Hour, Copper,
+     Apricot, Misty Blue, Moss).
+     1) Tonos de referencia expuestos tal cual.
+     2) Tokens semánticos históricos (marfil, verde-*, yute, dorado, madera)
+        re-mapeados a la nueva paleta para que todo el sitio se actualice
+        sin tocar cada componente.
+     ================================================================ */
 
-  --color-verde-salvia: #777D62;
-  --color-verde-salvia-light: #969B85;
-  --color-verde-salvia-dark: #5E634C;
+  /* --- 1. Tonos de referencia --- */
+  --color-peach: #F2B39A;
+  --color-peach-light: #F8D3C3;
+  --color-peach-dark: #E3957A;
 
-  --color-verde-bosque: #263D30;
-  --color-verde-bosque-light: #355442;
-  --color-verde-bosque-dark: #1B2C23;
-  --color-verde-bosque-deep: #132119;
+  --color-golden-hour: #EBB23F;
+  --color-golden-hour-light: #F3CB76;
+  --color-golden-hour-dark: #CC942A;
 
-  --color-yute-natural: #C4A77D;
-  --color-yute-natural-light: #D5BE9D;
-  --color-yute-natural-dark: #A8885B;
+  --color-copper: #C65A32;
+  --color-copper-light: #D67953;
+  --color-copper-dark: #9C4426;
 
-  --color-dorado-antiguo: #B79A53;
-  --color-dorado-antiguo-light: #D4BC7B;
-  --color-dorado-antiguo-dark: #967A38;
+  --color-apricot: #F29C5E;
+  --color-apricot-light: #F6BA8C;
+  --color-apricot-dark: #DB7F3F;
 
-  --color-madera-nogal: #805D40;
-  --color-madera-nogal-light: #9C7654;
-  --color-madera-nogal-dark: #62442C;
+  --color-misty-blue: #9FB6D3;
+  --color-misty-blue-light: #C2D2E6;
+  --color-misty-blue-dark: #7894B8;
+
+  --color-moss: #8E8C47;
+  --color-moss-light: #AAA867;
+  --color-moss-dark: #6E6C33;
+
+  /* --- 2. Tokens semánticos (re-mapeados) --- */
+  /* Papel / crema cálida con matiz durazno */
+  --color-marfil: #FBF3E8;
+  --color-marfil-50: #FEF9F2;
+  --color-marfil-100: #FBF3E8;
+  --color-marfil-200: #F5E4D2;
+  --color-marfil-300: #EDD2B8;
+
+  /* Moss */
+  --color-verde-salvia: #8E8C47;
+  --color-verde-salvia-light: #AAA867;
+  --color-verde-salvia-dark: #6E6C33;
+
+  /* Moss profundo para fondos oscuros */
+  --color-verde-bosque: #3D4426;
+  --color-verde-bosque-light: #545C35;
+  --color-verde-bosque-dark: #2B301B;
+  --color-verde-bosque-deep: #1D2112;
+
+  /* Apricot */
+  --color-yute-natural: #F29C5E;
+  --color-yute-natural-light: #F6BA8C;
+  --color-yute-natural-dark: #DB7F3F;
+
+  /* Golden Hour */
+  --color-dorado-antiguo: #EBB23F;
+  --color-dorado-antiguo-light: #F3CB76;
+  --color-dorado-antiguo-dark: #B9862A;
+
+  /* Copper (textos secundarios sobre papel) */
+  --color-madera-nogal: #A94F2C;
+  --color-madera-nogal-light: #C65A32;
+  --color-madera-nogal-dark: #8A3E22;
 
   --font-serif: var(--font-bodoni), 'Bodoni Moda', 'Playfair Display', Georgia, serif;
   --font-sans: var(--font-montserrat), 'Montserrat', sans-serif;
   --font-title: 'Great Vibes', 'Great Vibes Local', var(--font-great-vibes), cursive;
   --font-script: 'Great Vibes', 'Great Vibes Local', var(--font-great-vibes), cursive;
 
-  --shadow-soft: 0 10px 30px -10px rgba(38, 61, 48, 0.08);
-  --shadow-luxury: 0 20px 40px -15px rgba(38, 61, 48, 0.15);
-  --shadow-gold: 0 4px 20px -2px rgba(183, 154, 83, 0.25);
+  --shadow-soft: 0 10px 30px -10px rgba(29, 33, 18, 0.10);
+  --shadow-luxury: 0 20px 40px -15px rgba(29, 33, 18, 0.22);
+  --shadow-gold: 0 4px 20px -2px rgba(235, 178, 63, 0.28);
 }
 
 /* Fallback local garantizado para la tipografía Great Vibes del usuario */
@@ -79,68 +120,84 @@ span.font-title {
 }
 
 :root {
-  --background: #0E1812;
-  --foreground: #F4F0E6;
+  --background: #15180D;
+  --foreground: #FBF3E8;
 }
 
 html {
+  font-size: 17px;
   scroll-behavior: smooth;
-  background-color: #0E1812;
-  color: #F4F0E6;
+  background-color: #15180D;
+  color: #FBF3E8;
 }
 
 body {
   font-family: var(--font-sans);
-  background-color: #0E1812;
-  color: #F4F0E6;
+  background-color: #15180D;
+  color: #FBF3E8;
   overflow-x: hidden;
   position: relative;
-  selection-background-color: #777D62;
-  selection-color: #FFFFFF;
 }
 
 ::selection {
-  background-color: #777D62;
-  color: #F4F0E6;
+  background-color: #F29C5E;
+  color: #1D2112;
 }
 
 /* Subtle organic paper texture effect */
 .bg-paper-texture {
-  background-color: #F4F0E6;
-  background-image: radial-gradient(rgba(196, 167, 125, 0.12) 1px, transparent 0);
+  background-color: #FBF3E8;
+  background-image: radial-gradient(rgba(242, 156, 94, 0.14) 1px, transparent 0);
   background-size: 24px 24px;
 }
 
 .bg-dark-forest {
-  background-color: #263D30;
-  background-image: radial-gradient(rgba(183, 154, 83, 0.08) 1px, transparent 0);
+  background-color: #3D4426;
+  background-image: radial-gradient(rgba(235, 178, 63, 0.08) 1px, transparent 0);
   background-size: 28px 28px;
 }
 
-/* ===== Fondos por tipo de sección (diseño "editorial": oscuro / papel beige) ===== */
+/* ===== Fondos por tipo de sección (diseño "editorial": oscuro / papel durazno) ===== */
 .section-dark {
-  background-color: #132119;
-  background-image: radial-gradient(rgba(183, 154, 83, 0.07) 1px, transparent 0);
-  background-size: 28px 28px;
+  background-color: #1D2112;
+  background-image:
+    radial-gradient(ellipse at 50% 0%, rgba(242, 156, 94, 0.07), transparent 60%),
+    radial-gradient(rgba(235, 178, 63, 0.07) 1px, transparent 0);
+  background-size: 100% 100%, 28px 28px;
 }
 
 .section-dark-alt {
-  background-color: #1B2C23;
-  background-image: radial-gradient(rgba(183, 154, 83, 0.07) 1px, transparent 0);
-  background-size: 28px 28px;
+  background-color: #252A17;
+  background-image:
+    radial-gradient(ellipse at 50% 100%, rgba(159, 182, 211, 0.06), transparent 60%),
+    radial-gradient(rgba(235, 178, 63, 0.07) 1px, transparent 0);
+  background-size: 100% 100%, 28px 28px;
 }
 
 .section-deep {
-  background-color: #0E1812;
-  background-image: radial-gradient(rgba(183, 154, 83, 0.06) 1px, transparent 0);
+  background-color: #15180D;
+  background-image: radial-gradient(rgba(235, 178, 63, 0.06) 1px, transparent 0);
   background-size: 28px 28px;
 }
 
-/* Papel beige (debe coincidir con --color-marfil-200 usado en TornEdge) */
+/* Papel durazno (debe coincidir con --color-marfil-200 usado en TornEdge) */
 .bg-paper-beige {
-  background-color: #E8E0CD;
-  background-image: radial-gradient(rgba(128, 93, 64, 0.10) 1px, transparent 0);
+  background-color: #F5E4D2;
+  background-image: radial-gradient(rgba(198, 90, 50, 0.10) 1px, transparent 0);
   background-size: 22px 22px;
+}
+
+/* ===== Diálogo modal nativo (buscador de invitación) ===== */
+/* Evita que el scroll dentro del modal o sobre el backdrop se encadene a la página */
+dialog:modal {
+  overscroll-behavior: contain;
+}
+
+dialog::backdrop {
+  overflow: hidden;
+  overscroll-behavior: contain;
+  background-color: rgba(21, 24, 13, 0.82);
+  backdrop-filter: blur(6px);
 }
 
 /* Desvanece arriba y abajo para fundir una foto con el fondo oscuro */
@@ -169,14 +226,14 @@ body {
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #F4F0E6;
+  background: #15180D;
 }
 ::-webkit-scrollbar-thumb {
-  background: #C4A77D;
+  background: #F29C5E;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #777D62;
+  background: #EBB23F;
 }
 
 /* Modern Form Validation Styles following modern-web-guidance */
@@ -190,7 +247,7 @@ textarea:user-invalid {
 input:user-valid:not(:placeholder-shown),
 select:user-valid,
 textarea:user-valid:not(:placeholder-shown) {
-  border-color: #777D62;
+  border-color: #8E8C47;
 }
 
 /* Micro-animations */
@@ -209,10 +266,10 @@ textarea:user-valid:not(:placeholder-shown) {
 
 @keyframes pulseGlow {
   0%, 100% {
-    box-shadow: 0 0 15px rgba(183, 154, 83, 0.2);
+    box-shadow: 0 0 15px rgba(235, 178, 63, 0.2);
   }
   50% {
-    box-shadow: 0 0 30px rgba(183, 154, 83, 0.45);
+    box-shadow: 0 0 30px rgba(235, 178, 63, 0.45);
   }
 }
 
@@ -224,8 +281,8 @@ textarea:user-valid:not(:placeholder-shown) {
 .gold-shimmer {
   background: linear-gradient(
     90deg,
-    rgba(183, 154, 83, 0) 0%,
-    rgba(183, 154, 83, 0.8) 50%,
-    rgba(183, 154, 83, 0) 100%
+    rgba(235, 178, 63, 0) 0%,
+    rgba(235, 178, 63, 0.8) 50%,
+    rgba(235, 178, 63, 0) 100%
   );
 }

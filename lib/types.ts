@@ -1,10 +1,21 @@
 export type GuestStatus = "Pendiente" | "Confirmado" | "Cancelado";
 
+/** Respuesta individual de cada integrante de la invitación */
+export type AttendanceResponse = "Asiste" | "No asiste";
+
+export interface GuestMember {
+  nombre: string;
+  /** undefined = aún no ha respondido */
+  respuesta?: AttendanceResponse;
+}
+
 export interface GuestInvitation {
   id_invitacion: string;
   nombre_grupo: string;
   cupos: number;
   estado: GuestStatus;
+  /** Integrantes de la invitación (uno por cupo), con su respuesta individual */
+  integrantes: GuestMember[];
   mesa?: string;
   fecha_confirmacion?: string;
   asistentes_confirmados?: number;
@@ -12,10 +23,14 @@ export interface GuestInvitation {
   mensaje_novios?: string;
 }
 
+/**
+ * Payload del RSVP individual.
+ * `asistencia[i]` corresponde a `integrantes[i]` de la invitación (el servidor usa sus
+ * propios nombres, el cliente solo envía el sí/no por posición).
+ */
 export interface RSVPFormData {
   id_invitacion: string;
-  estado: "Confirmado" | "Cancelado";
-  asistentes_confirmados?: number;
+  asistencia: boolean[];
   restricciones_alimentarias?: string;
   mensaje_novios?: string;
 }

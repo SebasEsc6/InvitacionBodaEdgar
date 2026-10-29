@@ -9,35 +9,13 @@ import FlowerAccent from "../ui/FlowerAccent";
 interface TimelineEvent {
   time: string;
   title: string;
-  description: string;
+  description?: string;
 }
 
 const events: TimelineEvent[] = [
-  {
-    time: "4:00 PM",
-    title: "Recepción de Invitados",
-    description: "Bienvenida y cóctel ligero mientras nos preparamos para el inicio.",
-  },
-  {
-    time: "4:30 PM",
-    title: "Ceremonia Nupcial",
-    description: "El momento más sagrado: nuestros votos y el inicio de nuestro matrimonio.",
-  },
-  {
-    time: "6:00 PM",
-    title: "Cóctel & Fotos",
-    description: "Brindis al atardecer, aperitivos y fotografías con los recién casados.",
-  },
-  {
-    time: "7:30 PM",
-    title: "Cena & Brindis de Honor",
-    description: "Una exquisita experiencia gastronómica compartida en familia.",
-  },
-  {
-    time: "9:00 PM",
-    title: "Apertura de Baile & Fiesta",
-    description: "Música en vivo, celebración y momentos inolvidables en la pista.",
-  },
+  { time: "3:00 PM", title: "Ceremonia" },
+  { time: "5:00 PM", title: "Tentempié" },
+  { time: "6:00 PM", title: "Recepción de fiesta" },
 ];
 
 export default function TimelineSection() {
@@ -65,7 +43,7 @@ export default function TimelineSection() {
         className="top-[54%] sm:top-[56%]"
       />
 
-      <div className="relative z-10 mx-auto max-w-[270px] sm:max-w-lg px-2 sm:px-10">
+      <div className="relative z-10 mx-auto max-w-[300px] sm:max-w-xl px-2 sm:px-10">
         <SectionHeading
           title="Cronograma"
           subtitle="Programa del gran día"
@@ -73,19 +51,27 @@ export default function TimelineSection() {
           className="mb-12 sm:mb-14"
         />
 
-        <ol className="space-y-10 sm:space-y-12 text-center">
+        <ol className="space-y-7 sm:space-y-9 text-center">
           {events.map((item, index) => (
             <li key={item.time}>
               <FadeUp delay={index * 0.05}>
-                <p className="font-serif text-3xl sm:text-4xl md:text-5xl font-light leading-none tracking-[-0.02em] text-verde-bosque">
+                <p className="font-serif text-4xl sm:text-5xl md:text-6xl font-light leading-none tracking-[-0.02em] text-verde-bosque">
                   {item.time}
                 </p>
-                <h3 className="mt-2 font-serif text-xl sm:text-2xl font-normal text-verde-bosque">
+                <h3 className="mt-2.5 font-serif text-2xl sm:text-3xl font-medium text-madera-nogal">
                   {item.title}
                 </h3>
-                <p className="mx-auto mt-1.5 max-w-xs font-sans text-xs leading-relaxed text-madera-nogal sm:max-w-sm sm:text-sm font-light">
-                  {item.description}
-                </p>
+                {item.description && (
+                  <p className="mx-auto mt-2 max-w-sm font-sans text-sm sm:text-base leading-relaxed text-madera-nogal font-normal">
+                    {item.description}
+                  </p>
+                )}
+                {index < events.length - 1 && (
+                  <span
+                    aria-hidden="true"
+                    className="mx-auto mt-7 sm:mt-9 block h-10 w-px bg-gradient-to-b from-apricot-dark/70 to-transparent"
+                  />
+                )}
               </FadeUp>
             </li>
           ))}

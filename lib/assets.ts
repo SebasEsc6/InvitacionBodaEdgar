@@ -9,8 +9,10 @@
  * Este archivo se conserva principalmente para la carga dinámica de fotos de portada/dresscode/ubicación.
  */
 
-/** Fotos (carpeta `public/images/fotos/`). Extensiones aceptadas: jpg, jpeg, webp, png. */
-export type PhotoSlot = "portada" | "dresscode" | "ubicacion";
+/** Fotos (carpeta `public/images/fotos/`). Extensiones aceptadas: jpg, jpeg, webp, png.
+ *  - `inspiracion`: tablero de inspiración del Dress Code (sección "Inspírate").
+ *  - `ubicacion`: fondo de la tarjeta de Hacienda el Pilar. */
+export type PhotoSlot = "portada" | "dresscode" | "ubicacion" | "inspiracion";
 
 /** Flores (carpeta `public/images/flores/`). Deben ser PNG/WebP con fondo transparente. */
 export type FlowerSlot =
@@ -23,7 +25,7 @@ export type FlowerSlot =
   | "final"
   | "centro-exuberante";
 
-const PHOTO_EXTENSIONS = ["jpg", "jpeg", "webp", "png"] as const;
+const PHOTO_EXTENSIONS = ["webp", "jpg", "jpeg", "png"] as const;
 const FLOWER_EXTENSIONS = ["png", "webp"] as const;
 
 /** Lista ordenada de rutas candidatas: primero lo que sube el usuario, al final el default. */

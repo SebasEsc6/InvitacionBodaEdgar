@@ -19,13 +19,14 @@ export default function HomePage() {
       <GiftSection />
       <LocationSection />
 
-      {/* Consulta de Mesa y Asignación */}
+      {/* Sección de Búsqueda de Invitación y Ubicación de Mesa */}
       <TableSearchSection />
 
-      {/* Reproductor de música */}
-      <MusicPlayer trackId="4l5HZ6iRc2oN5NtcT141yq" />
-
+      {/* Footer de cierre con CTA 'BUSCAR MI INVITACIÓN' */}
       <FooterSection />
+
+      {/* Reproductor de música ambiental */}
+      <MusicPlayer trackId="4l5HZ6iRc2oN5NtcT141yq" />
     </main>
   );
 }

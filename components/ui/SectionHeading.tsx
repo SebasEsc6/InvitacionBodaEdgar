@@ -32,8 +32,8 @@ export default function SectionHeading({
       </h2>
       {subtitle && (
         <p
-          className={`mt-2 font-sans text-xs sm:text-sm tracking-wide font-light ${
-            dark ? "text-yute-natural-light/80" : "text-madera-nogal/85"
+          className={`mt-2 font-sans text-sm sm:text-base tracking-wide font-normal ${
+            dark ? "text-yute-natural-light/90" : "text-madera-nogal"
           }`}
         >
           {subtitle}

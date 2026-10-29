@@ -18,12 +18,12 @@ export default function FooterSection() {
   const isInvitePage = pathname.startsWith("/invite");
 
   return (
-    <footer className="section-deep relative text-center text-marfil/80 overflow-hidden pt-16 sm:pt-24 pb-48 sm:pb-60 md:pb-72">
+    <footer className="section-deep relative text-center text-marfil/90 overflow-hidden pt-16 sm:pt-24 pb-48 sm:pb-60 md:pb-72">
       <div className="relative z-20 mx-auto max-w-2xl px-6 pb-6">
         <FadeUp>
           <p
             style={{ fontFamily: "'Great Vibes', 'Great Vibes Local', var(--font-great-vibes), cursive" }}
-            className="font-title text-5xl sm:text-7xl font-normal leading-tight text-dorado-antiguo-light"
+            className="font-title text-6xl sm:text-8xl font-normal leading-tight text-dorado-antiguo-light"
           >
             ¡Te esperamos!
           </p>
@@ -35,14 +35,14 @@ export default function FooterSection() {
           </div>
           <p
             style={{ fontFamily: "'Great Vibes', 'Great Vibes Local', var(--font-great-vibes), cursive" }}
-            className="mt-6 font-title text-3xl sm:text-5xl text-dorado-antiguo-light"
+            className="mt-6 font-title text-4xl sm:text-6xl text-dorado-antiguo-light"
           >
             Edgar y Camila
           </p>
-          <p className="mt-2 font-sans text-xs uppercase tracking-widest text-yute-natural font-light">
+          <p className="mt-3 font-sans text-xs sm:text-sm uppercase tracking-widest text-yute-natural font-medium">
             05 de Diciembre de 2026
           </p>
-          <p className="mt-5 font-serif text-sm italic text-marfil/60">
+          <p className="mt-5 font-serif text-base sm:text-lg italic text-marfil/75 leading-relaxed">
             Con todo nuestro amor, gracias por ser parte fundamental de nuestra historia.
           </p>
 
@@ -51,18 +51,18 @@ export default function FooterSection() {
             {isInvitePage ? (
               <Link
                 href="/"
-                className="group inline-flex items-center gap-2 rounded-full border border-dorado-antiguo/40 bg-verde-bosque/60 px-5 py-2.5 font-sans text-xs uppercase tracking-wider text-marfil backdrop-blur-md shadow-gold transition-all duration-300 hover:bg-verde-bosque hover:border-dorado-antiguo hover:scale-105 active:scale-95"
+                className="group inline-flex items-center gap-2 rounded-full border border-dorado-antiguo/40 bg-verde-bosque/60 px-6 py-3 font-sans text-xs sm:text-sm font-semibold uppercase tracking-wider text-marfil backdrop-blur-md shadow-gold transition-all duration-300 hover:bg-verde-bosque hover:border-dorado-antiguo hover:scale-105 active:scale-95"
               >
-                <ArrowLeft className="h-3.5 w-3.5 text-dorado-antiguo-light transition-transform duration-300 group-hover:-translate-x-1" />
+                <ArrowLeft className="h-4 w-4 text-dorado-antiguo-light transition-transform duration-300 group-hover:-translate-x-1" />
                 <span>Volver a la Página Principal</span>
               </Link>
             ) : (
               <a
                 href="#mesas"
-                className="group inline-flex items-center gap-2 rounded-full border border-dorado-antiguo/40 bg-verde-bosque/60 px-5 py-2.5 font-sans text-xs uppercase tracking-wider text-marfil backdrop-blur-md shadow-gold transition-all duration-300 hover:bg-verde-bosque hover:border-dorado-antiguo hover:scale-105 active:scale-95"
+                className="group inline-flex items-center gap-2 rounded-full border border-dorado-antiguo/50 bg-verde-bosque/80 px-7 py-3.5 font-sans text-xs sm:text-sm font-semibold uppercase tracking-wider text-marfil backdrop-blur-md shadow-gold transition-all duration-300 hover:bg-verde-bosque hover:border-dorado-antiguo hover:scale-105 active:scale-95"
               >
-                <Search className="h-3.5 w-3.5 text-dorado-antiguo-light transition-transform duration-300 group-hover:scale-110" />
-                <span>Buscar mi Invitación y Mesa</span>
+                <Search className="h-4 w-4 text-dorado-antiguo-light transition-transform duration-300 group-hover:scale-110" />
+                <span>BUSCAR MI INVITACIÓN</span>
               </a>
             )}
           </div>
