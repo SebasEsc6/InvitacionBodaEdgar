@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 
 interface WaxSealProps {
   initials?: string;
@@ -6,38 +7,35 @@ interface WaxSealProps {
   className?: string;
 }
 
+/**
+ * Medallón de sello de cera (lacre) 3D realista con monograma caligráfico de Edgar y Camila.
+ * Basado en la referencia fotográfica del cliente (cera color taupe/champagne oliva orgánico).
+ */
 export default function WaxSeal({
-  initials = "E & C",
   size = "md",
   className = "",
 }: WaxSealProps) {
   const sizeClasses = {
-    sm: "w-12 h-12 text-xs",
-    md: "w-20 h-20 text-sm",
-    lg: "w-28 h-28 text-base",
+    sm: "w-16 h-16",
+    md: "w-28 h-28 sm:w-32 sm:h-32",
+    lg: "w-36 h-36 sm:w-44 sm:h-44",
   };
 
   return (
     <div
-      className={`relative inline-flex items-center justify-center rounded-full select-none ${sizeClasses[size]} ${className}`}
-      style={{
-        background: "radial-gradient(circle at 35% 35%, #F3CB76 0%, #EBB23F 45%, #C65A32 100%)",
-        boxShadow:
-          "inset 0 2px 4px rgba(255, 255, 255, 0.4), inset 0 -3px 6px rgba(0, 0, 0, 0.35), 0 8px 20px -4px rgba(198, 90, 50, 0.4)",
-      }}
+      className={`relative inline-flex items-center justify-center select-none filter drop-shadow-[0_10px_22px_rgba(0,0,0,0.42)] transition-transform duration-300 hover:scale-105 ${sizeClasses[size]} ${className}`}
     >
-      {/* Outer irregular seal ring */}
-      <div className="absolute inset-1 rounded-full border border-dorado-antiguo-light/40 opacity-70" />
-
-      {/* Inner embossed stamp */}
-      <div className="relative flex flex-col items-center justify-center text-center">
-        <span
-          className="font-script tracking-wider text-verde-bosque-deep font-bold drop-shadow-[0_1px_1px_rgba(255,255,255,0.4)]"
-          style={{ textShadow: "0 1px 1px rgba(255,255,255,0.4), 0 -1px 1px rgba(0,0,0,0.3)" }}
-        >
-          {initials}
-        </span>
-      </div>
+      <picture className="block h-full w-full">
+        <source srcSet="/images/sello-cera-ec.webp" type="image/webp" />
+        <Image
+          src="/images/sello-cera-ec.png"
+          alt="Sello de cera Edgar y Camila"
+          width={180}
+          height={180}
+          priority={false}
+          className="h-full w-full object-contain pointer-events-none select-none"
+        />
+      </picture>
     </div>
   );
 }

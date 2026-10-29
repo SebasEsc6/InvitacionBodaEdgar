@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useTransition } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import confetti from "canvas-confetti";
 import {
   CheckCircle2,
@@ -24,10 +25,12 @@ interface IsolatedInvitationViewProps {
 }
 
 export default function IsolatedInvitationView({ guest }: IsolatedInvitationViewProps) {
+  const router = useRouter();
   const [currentGuest, setCurrentGuest] = useState<GuestInvitation>(guest);
   const [isPending, startTransition] = useTransition();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [redirectCountdown, setRedirectCountdown] = useState<number | null>(null);
 
   // Inicializar el estado de asistencia individual para cada integrante
   const [memberAttendance, setMemberAttendance] = useState<boolean[]>(() => {
@@ -93,7 +96,24 @@ export default function IsolatedInvitationView({ guest }: IsolatedInvitationView
     }
   };
 
+  // Redirección automática a la página principal en 3 segundos tras confirmar asistencia
+  useEffect(() => {
+    if (redirectCountdown === null) return;
+
+    if (redirectCountdown <= 0) {
+      router.push("/");
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      setRedirectCountdown((prev) => (prev !== null ? prev - 1 : null));
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [redirectCountdown, router]);
+
   const handleToggleMember = (index: number, willAttend: boolean) => {
+    setRedirectCountdown(null);
     setMemberAttendance((prev) => {
       const next = [...prev];
       next[index] = willAttend;
@@ -114,8 +134,13 @@ export default function IsolatedInvitationView({ guest }: IsolatedInvitationView
       if (response.success && response.guest) {
         setCurrentGuest(response.guest);
         setIsEditing(false);
+        // Si confirma al menos un asistente, activar confeti e iniciar redirección de 3 segundos
         if (response.guest.asistentes_confirmados && response.guest.asistentes_confirmados > 0) {
           triggerConfetti();
+          setRedirectCountdown(3);
+        } else {
+          // Si todos rechazaron en la confirmación individual, se queda en la página
+          setRedirectCountdown(null);
         }
       } else {
         setErrorMessage(
@@ -129,6 +154,8 @@ export default function IsolatedInvitationView({ guest }: IsolatedInvitationView
     const allDeclined = currentGuest.integrantes.map(() => false);
     setMemberAttendance(allDeclined);
     setErrorMessage(null);
+    // Si rechaza, cancelar cualquier temporizador y permanecer en la página de invitación
+    setRedirectCountdown(null);
 
     startTransition(async () => {
       const response = await submitRSVP({
@@ -139,6 +166,7 @@ export default function IsolatedInvitationView({ guest }: IsolatedInvitationView
       if (response.success && response.guest) {
         setCurrentGuest(response.guest);
         setIsEditing(false);
+        setRedirectCountdown(null);
       } else {
         setErrorMessage(
           response.error || "No pudimos guardar tu respuesta. Por favor intenta nuevamente."
@@ -246,6 +274,37 @@ export default function IsolatedInvitationView({ guest }: IsolatedInvitationView
                 </p>
               </div>
 
+              {/* Notificación de Redirección Automática en 3s (solo al confirmar asistencia) */}
+              {redirectCountdown !== null && (
+                <div className="mx-auto my-2 w-full rounded-2xl border border-dorado-antiguo/50 bg-emerald-950/85 p-3.5 text-center text-marfil backdrop-blur-md shadow-lg animate-fade-in">
+                  <div className="flex items-center justify-center gap-2">
+                    <Sparkles className="h-4 w-4 text-dorado-antiguo-light animate-pulse shrink-0" />
+                    <p className="font-sans text-xs sm:text-sm font-medium text-marfil">
+                      ¡Qué alegría contar contigo! Te llevamos a la página principal en{" "}
+                      <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-dorado-antiguo text-verde-bosque-deep font-bold font-serif text-sm">
+                        {redirectCountdown}
+                      </span>{" "}
+                      {redirectCountdown === 1 ? "segundo..." : "segundos..."}
+                    </p>
+                  </div>
+                  <div className="mt-2 flex items-center justify-center gap-4 text-xs font-sans">
+                    <Link
+                      href="/"
+                      className="font-semibold text-dorado-antiguo-light hover:underline"
+                    >
+                      Ir ahora mismo →
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={() => setRedirectCountdown(null)}
+                      className="text-marfil/70 hover:text-white underline cursor-pointer"
+                    >
+                      Quedarme aquí
+                    </button>
+                  </div>
+                </div>
+              )}
+
               {/* Desglose individual de integrantes y su estado */}
               <div className="space-y-2 text-left">
                 <span className="block font-sans text-[11px] uppercase tracking-wider text-dorado-antiguo-light/80 font-medium text-center mb-1">
@@ -302,12 +361,12 @@ export default function IsolatedInvitationView({ guest }: IsolatedInvitationView
                 })}
               </div>
 
-
               {/* Botón para modificar la respuesta */}
               <div className="pt-2">
                 <button
                   type="button"
                   onClick={() => {
+                    setRedirectCountdown(null);
                     setIsEditing(true);
                     setMemberAttendance(
                       currentGuest.integrantes.map((m) => m.respuesta !== "No asiste")
