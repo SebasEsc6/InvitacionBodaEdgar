@@ -26,7 +26,6 @@ const paletteColors = [
   { name: "Peach", hex: "#F2B39A" },
   { name: "Apricot", hex: "#F29C5E" },
   { name: "Golden Hour", hex: "#EBB23F" },
-  { name: "Moss", hex: "#8E8C47" },
   { name: "Misty Blue", hex: "#9FB6D3" },
   { name: "Copper", hex: "#C65A32" },
 ];
