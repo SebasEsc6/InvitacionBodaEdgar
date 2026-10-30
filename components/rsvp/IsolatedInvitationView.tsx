@@ -13,12 +13,13 @@ import {
   Loader2,
   Check,
   X,
+  Calendar,
 } from "lucide-react";
 import SmartImage from "../ui/SmartImage";
 import { photoSources } from "@/lib/assets";
 import { GuestInvitation } from "@/lib/types";
 import { submitRSVP } from "@/app/actions/rsvp";
-import { EVENT_DATE_ISO, EVENT_TIME_LABEL } from "@/lib/event";
+import { EVENT_DATE_ISO, EVENT_TIME_LABEL, RSVP_DEADLINE_LABEL } from "@/lib/event";
 
 interface IsolatedInvitationViewProps {
   guest: GuestInvitation;
@@ -227,6 +228,17 @@ export default function IsolatedInvitationView({ guest }: IsolatedInvitationView
             <Users className="h-3.5 w-3.5" />
             <span>
               {currentGuest.cupos} {currentGuest.cupos === 1 ? "cupo reservado" : "cupos reservados"}
+            </span>
+          </div>
+
+          {/* Fecha límite de confirmación */}
+          <div className="mt-3 block">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-dorado-antiguo/35 bg-black/25 px-4 py-1.5 font-sans text-xs sm:text-sm text-dorado-antiguo-light shadow-inner">
+              <Calendar className="h-3.5 w-3.5 text-dorado-antiguo-light shrink-0" />
+              <span>
+                Confirmar máximo hasta el{" "}
+                <strong className="font-semibold text-marfil">{RSVP_DEADLINE_LABEL}</strong>
+              </span>
             </span>
           </div>
 
